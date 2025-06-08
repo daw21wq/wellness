@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wskazówka Dnia - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="max-w-md w-full p-8">
+        <div class="content-card shadow-lg p-8 text-center">
+            <div class="text-5xl mb-4 animate-pulse">🌱</div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Wskazówka Dnia</h1>
+            <p id="daily-tip-text" class="text-gray-700 mb-6 min-h-[90px] flex items-center justify-center text-lg font-medium"></p>
+            <button onclick="window.close()" class="bg-orange-500 text-white font-bold py-2 px-6 rounded-full hover:bg-orange-600 transition-colors">
+                Zamknij
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const dailyTips = [
+            "Zacznij dzień od szklanki ciepłej wody z cytryną, aby pobudzić metabolizm.",
+            "Poświęć 5 minut na świadome, głębokie oddychanie, aby dotlenić organizm.",
+            "W trakcie dnia zrób krótką przerwę na rozciąganie, zwłaszcza jeśli masz siedzącą pracę.",
+            "Dodaj do posiłku garść zielonych warzyw liściastych – to bomba witaminowa.",
+            "Wieczorem unikaj niebieskiego światła z ekranów na godzinę przed snem, by poprawić jakość snu.",
+            "Praktykuj wdzięczność – pomyśl o trzech rzeczach, za które jesteś dziś wdzięczny.",
+            "Wybierz się na 15-minutowy spacer w ciągu dnia, najlepiej w otoczeniu zieleni.",
+            "Spróbuj zjeść posiłek w ciszy i skupieniu, delektując się każdym kęsem.",
+            "Wypij napar z imbiru, aby wesprzeć trawienie i wzmocnić odporność.",
+            "Uśmiechnij się do nieznajomej osoby – mały gest może poprawić dzień Wam obojgu."
+        ];
+
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dayOfYear = getDayOfYear();
+            const tipIndex = dayOfYear % dailyTips.length;
+            const dailyTip = dailyTips[tipIndex];
+
+            const tipElement = document.getElementById('daily-tip-text');
+            tipElement.style.opacity = 0;
+            setTimeout(() => {
+                tipElement.textContent = dailyTip;
+                tipElement.style.transition = 'opacity 0.5s';
+                tipElement.style.opacity = 1;
+            }, 100);
+        });
+    </script>
+</body>
+</html> 

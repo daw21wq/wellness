@@ -1,0 +1,217 @@
+{
+  "userPanel": {
+    "greeting": "Witaj",
+    "subGreeting": "Piękny dzień na wellness",
+    "searchPlaceholder": "Szukaj w aplikacji...",
+    "notificationsTitle": "Powiadomienia",
+    "notif1Title": "Nowy przepis dodany!",
+    "notif1Desc": "Spróbuj pysznego dania z dyni.",
+    "notif2Title": "Twoja energia jest wysoka",
+    "notif2Desc": "Idealny dzień na ćwiczenia na świeżym powietrzu.",
+    "notif3Title": "Strefa Premium czeka",
+    "notif3Desc": "Odkryj nowe medytacje i porady.",
+    "notifViewAll": "Zobacz wszystkie",
+    "centralQuestion": "Jaką sezonową aktywność chcesz wybrać? 🌸",
+    "centralQuestionSub": "Odkryj harmonię z naturą",
+    "seasonalRecipe": "Przepis sezonowy",
+    "seasonalActivity": "Aktywność sezonowa",
+    "dailyTip": "Wskazówka dnia",
+    "herbsAndEmotions": "Zioła i Emocje",
+    "goPremium": "Go Premium",
+    "unlockAll": "Odblokuj wszystko",
+    "inspirationsTitle": "Dzisiejsze inspiracje",
+    "yourEnergy": "Twoja energia na dziś",
+    "yourEnergyDesc": "Wysoka - idealny czas na aktywność",
+    "recommendedProducts": "Polecane produkty",
+    "recommendedProductsDesc": "Sezonowe składniki i rytuały",
+    "toastWelcome": "🌸 Witaj w aplikacji Sezonowość Chińska!",
+    "toastLang": "Opcja zmiany języka będzie dostępna wkrótce!"
+  },
+  "seasonalEnergy": {
+    "pageTitle": "Energia Sezonu",
+    "footer": "Żyj w rytmie natury, każdego dnia.",
+    "seasons": {
+      "Wiosna": {
+        "title": "Wiosenna Energia", "header": "Energia Wiosny", "subheader": "Czas odnowy i wzrostu",
+        "organEmotion": "<strong>Wątroba i Pęcherzyk Żółciowy:</strong> Związane z emocjami takimi jak gniew i frustracja, ale także kreatywność i planowanie. Dbaj o swobodny przepływ energii, unikając tłustego jedzenia i alkoholu.",
+        "tips": ["Zacznij dzień od szklanki wody z cytryną.", "Jedz więcej zielonych warzyw (szpinak, jarmuż, brokuły).", "Postaw na ruch: spacery, joga, rozciąganie.", "Praktykuj cierpliwość i odpuszczanie urazów."]
+      },
+      "Lato": {
+        "title": "Letnia Radość", "header": "Energia Lata", "subheader": "Czas ekspansji i radości",
+        "organEmotion": "<strong>Serce i Jelito Cienkie:</strong> Centrum radości, miłości i świadomości. Brak równowagi może prowadzić do niepokoju lub depresji. Pielęgnuj relacje i śmiej się często.",
+        "tips": ["Jedz lekkie i chłodzące potrawy: arbuzy, ogórki, sałaty.", "Nawadniaj się, pijąc dużo wody (unikaj lodowatych napojów).", "Wstawaj wcześnie, aby korzystać ze światła dnia.", "Znajdź czas na zabawę i spotkania z przyjaciółmi."]
+      },
+      "PozneLato": {
+          "title": "Harmonia Późnego Lata", "header": "Energia Dojrzewania", "subheader": "Czas obfitości i stabilizacji",
+          "organEmotion": "<strong>Śledziona i Żołądek:</strong> Odpowiadają za trawienie i przyswajanie, zarówno pokarmu, jak i informacji. Związane z zamartwianiem się. Odżywiaj się regularnie, aby je wspierać.",
+          "tips": ["Spożywaj naturalnie słodkie warzywa: dynia, marchew, bataty.", "Jedz ciepłe, gotowane posiłki, które są łatwe do strawienia.", "Unikaj nadmiaru surowych produktów i słodyczy.", "Praktykuj medytację, aby uspokoić gonitwę myśli."]
+      },
+      "Jesien": {
+          "title": "Jesienna Refleksja", "header": "Energia Jesieni", "subheader": "Czas porządków i gromadzenia",
+          "organEmotion": "<strong>Płuca i Jelito Grube:</strong> Związane ze smutkiem i żalem, ale także z umiejętnością odpuszczania. To czas, by zwolnić i zastanowić się, co nam służy.",
+          "tips": ["Jedz gotowane, rozgrzewające potrawy, np. zupy i warzywa korzeniowe.", "Włącz do diety białe warzywa: kalafior, rzepę, czosnek.", "Dbaj o nawilżenie skóry i pij herbaty ziołowe.", "Praktykuj głębokie oddychanie i uporządkuj swoją przestrzeń."]
+      },
+      "Zima": {
+          "title": "Zimowy Spokój", "header": "Energia Zimy", "subheader": "Czas odpoczynku i regeneracji",
+          "organEmotion": "<strong>Nerki i Pęcherz Moczowy:</strong> Przechowują naszą życiową esencję (Jing). Związane ze strachem i wolą życia. To kluczowy czas na regenerację sił.",
+          "tips": ["Śpij więcej i kładź się wcześniej spać.", "Jedz ciepłe, pożywne zupy, gulasze i warzywa korzeniowe.", "Ogranicz stres i intensywny wysiłek fizyczny.", "Wspieraj nerki jedząc orzechy włoskie, czarny sezam i fasolę."]
+      }
+    }
+  },
+  "seasonalActivity": {
+    "pageTitle": "Aktywność Sezonowa",
+    "footer": "Pamiętaj, by słuchać swojego ciała i dostosować aktywność do swoich możliwości.",
+    "howTo": "Jak wykonać:",
+    "seasons": {
+      "Wiosna": {
+        "title": "Aktywność Wiosenna", "subheader": "Obudź swoją energię w harmonii z naturą.",
+        "activityTitle": "🚶‍♀️ Spacer z Naturą",
+        "activityDesc": "Wiosna to czas odrodzenia. Twoje ciało naturalnie pragnie więcej ruchu na świeżym powietrzu. Proponujemy świadomy spacer, który dotleni organizm i oczyści umysł.",
+        "activitySteps": ["Znajdź park lub las. Pozostaw telefon w kieszeni.", "Idź spokojnym, miarowym krokiem przez 15-30 minut.", "Skup się na oddechu: głęboki wdech nosem, długi wydech ustami.", "Obserwuj budzącą się do życia przyrodę: pąki na drzewach, śpiew ptaków.", "Poczuj, jak z każdym krokiem uchodzi z Ciebie napięcie."],
+        "yogaTitle": "🦁 Joga Twarzy: Oddech Lwa",
+        "yogaDesc": "Ta energetyzująca praktyka pomaga uwolnić napięcie z twarzy i szczęki, pobudza krążenie i dodaje cerze blasku. Idealna na wiosenne przebudzenie!",
+        "yogaSteps": ["Usiądź wygodnie z prostym kręgosłupem.", "Weź głęboki wdech przez nos.", "Przy wydechu otwórz szeroko usta i wysuń język jak najdalej w kierunku brody.", "Wydychając powietrze, wydaj z siebie dźwięk \"haaa\", patrząc w górę, w punkt między brwiami.", "Rozluźnij twarz. Powtórz 3-5 razy."]
+      },
+      "Lato": {
+        "title": "Aktywność Letnia", "subheader": "Ciesz się pełnią energii i słońca.",
+        "activityTitle": "💧 Pływanie lub Brodenie w Wodzie",
+        "activityDesc": "Lato to żywioł Ognia. Woda doskonale równoważy jego nadmiar, chłodząc ciało i uspokajając umysł. Poczuj lekkość i swobodę.",
+        "activitySteps": ["Znajdź bezpieczne jezioro, rzekę lub basen.", "Zanurz się powoli, czując, jak woda chłodzi skórę.", "Pływaj w swoim tempie lub po prostu brodź w wodzie, ciesząc się chwilą.", "Po wyjściu z wody nie wycieraj się od razu, pozwól słońcu delikatnie Cię osuszyć.", "Pamiętaj o nawodnieniu – pij dużo wody."],
+        "yogaTitle": "🌬️ Oddech Chłodzący (Shitali Pranayama)",
+        "yogaDesc": "To ćwiczenie oddechowe działa jak wewnętrzna klimatyzacja. Obniża temperaturę ciała, uspokaja emocje i gasi nadmierny ogień trawienny.",
+        "yogaSteps": ["Usiądź prosto i zrelaksuj się.", "Zwiń język w rurkę. Jeśli nie potrafisz, lekko zaciśnij zęby i przyłóż język do nich.", "Zrób powolny, długi wdech przez zwinięty język (lub zęby), jakbyś ssał powietrze przez słomkę.", "Zamknij usta i zrób spokojny wydech przez nos.", "Powtórz 5-10 razy, czując chłód rozchodzący się po ciele."]
+      },
+      "PozneLato": {
+        "title": "Aktywność Późnego Lata", "subheader": "Znajdź stabilizację i ugruntowanie.",
+        "activityTitle": " barefoot walk (chodzenie boso)",
+        "activityDesc": "Późne lato to element Ziemi. Bezpośredni kontakt z ziemią pomaga zrzucić nadmiar zmartwień, uspokoić umysł i poczuć stabilność.",
+        "activitySteps": ["Znajdź bezpieczny kawałek trawy, piasku lub ziemi.", "Zdejmij buty i skarpetki.", "Idź powoli, skupiając całą uwagę na odczuciach w stopach.", "Poczuj teksturę podłoża: miękkość trawy, ciepło piasku.", "Praktykuj przez 10-15 minut, oddychając głęboko brzuchem."],
+        "yogaTitle": "💆‍♀️ Masaż Brzucha",
+        "yogaDesc": "Prosty automasaż, który wspiera Śledzionę i Żołądek, poprawia trawienie i pomaga rozproszyć nagromadzone zmartwienia w centrum ciała.",
+        "yogaSteps": ["Połóż się wygodnie na plecach.", "Rozgrzej dłonie, pocierając je o siebie.", "Połóż ciepłą dłoń na brzuchu, w okolicy pępka.", "Zacznij masować brzuch zgodnie z ruchem wskazówek zegara, wykonując powolne, okrężne ruchy.", "Wykonaj 30-50 okrążeń, oddychając spokojnie i głęboko."]
+      },
+      "Jesien": {
+        "title": "Aktywność Jesienna", "subheader": "Zwolnij i zadbaj o oddech.",
+        "activityTitle": "🌲 Leśna Kąpiel (Shinrin-yoku)",
+        "activityDesc": "Jesień to czas Płuc. Zanurzenie się w atmosferze lasu, pełnej czystego powietrza, pomaga wzmocnić energię oddechową i odpuścić smutek.",
+        "activitySteps": ["Wybierz się do lasu lub dużego parku.", "Spaceruj bardzo powoli, bez konkretnego celu.", "Zatrzymaj się i weź 5 głębokich, świadomych oddechów. Poczuj zapach lasu.", "Obserwuj opadające liście – symbol odpuszczania tego, co zbędne.", "Dotknij kory drzewa, poczuj mech. Bądź w pełni obecny."],
+        "yogaTitle": "🧘‍♀️ Głębokie Oddychanie Przeponowe",
+        "yogaDesc": "To fundament zdrowia Płuc. Wzmacnia Wei Qi (energię ochronną) i pomaga w uwolnieniu nagromadzonych emocji.",
+        "yogaSteps": ["Usiądź lub połóż się wygodnie.", "Połóż jedną dłoń na klatce piersiowej, a drugą na brzuchu.", "Weź powolny wdech przez nos, kierując powietrze tak, aby uniosła się dłoń na brzuchu, a ta na klatce pozostała nieruchoma.", "Zrób jeszcze wolniejszy wydech przez nos lub usta, czując, jak brzuch opada.", "Powtórz 10-15 razy, skupiając się na ruchu brzucha."]
+      },
+      "Zima": {
+        "title": "Aktywność Zimowa", "subheader": "Regeneruj siły i gromadź esencję.",
+        "activityTitle": "🔥 Delikatne Rozciąganie w Cieple",
+        "activityDesc": "Zimą unikamy intensywnego wysiłku, który prowadzi do pocenia się i utraty cennej energii Yang. Delikatne rozciąganie w domu pomaga zachować elastyczność bez wychładzania.",
+        "activitySteps": ["Znajdź ciepłe, przytulne miejsce w domu.", "Wykonaj serię łagodnych przeciągnięć, jak po przebudzeniu.", "Skup się na delikatnym rozciąganiu pleców i nóg.", "Każdą pozycję przytrzymaj przez 30-60 sekund, oddychając spokojnie.", "Zakończ, siadając na chwilę w ciszy."],
+        "yogaTitle": "👂 Rozgrzewający Masaż Uszu",
+        "yogaDesc": "Uszy w medycynie chińskiej są ściśle powiązane z Nerkami. Ich masowanie i rozgrzewanie bezpośrednio wzmacnia energię Nerek – nasz rezerwuar sił życiowych.",
+        "yogaSteps": ["Usiądź wygodnie.", "Chwyć małżowiny uszne kciukiem i palcem wskazującym.", "Zacznij masować i ugniatać uszy, poruszając się od góry do dołu.", "Masuj, aż poczujesz przyjemne ciepło, zazwyczaj przez 1-2 minuty.", "Na koniec delikatnie pociągnij za płatki uszu w dół."]
+      }
+    }
+  },
+  "dailyTip": {
+    "pageTitle": "Wskazówka Dnia - Sezonowość Chińska",
+    "header": "Wskazówka Dnia",
+    "closeButton": "Zamknij",
+    "tips": [
+      "Wiosna to idealny czas na detoks. Zacznij dzień od szklanki ciepłej wody z cytryną, aby pobudzić wątrobę.",
+      "Włącz do diety więcej zielonych warzyw liściastych, jak szpinak i jarmuż. Wspierają one element Drzewa.",
+      "Wiosną postaw na ruch na świeżym powietrzu. Nawet krótki spacer pomoże poruszyć energię Qi.",
+      "Latem nawadniaj organizm, pijąc dużo wody i jedząc soczyste owoce, jak arbuzy i melony. Unikaj napojów z lodem.",
+      "Chroń swoje Serce, element Ognia. Znajdź czas na radość, śmiech i relaks z bliskimi.",
+      "Jedz lżejsze posiłki. Sałatki, warzywa gotowane na parze i chłodniki to świetny wybór na upalne dni.",
+      "Późne lato to czas Ziemi. Skup się na odżywianiu Śledziony, jedząc naturalnie słodkie warzywa: dynię, marchew, bataty.",
+      "To dobry moment na refleksję i ugruntowanie. Medytacja lub prowadzenie dziennika pomoże Ci znaleźć równowagę.",
+      "Ogranicz nabiał, cukier i surowe jedzenie, które mogą osłabić system trawienny i wprowadzić 'wilgoć' do organizmu.",
+      "Jesienią wzmacniaj Płuca. Jedz produkty o ostrym smaku w umiarkowanych ilościach (cebula, czosnek, imbir) i białe warzywa (kalafior, rzodkiew).",
+      "Zadbaj o porządek w swoim otoczeniu. Porządki w domu symbolizują oczyszczenie i przygotowanie na okres spoczynku.",
+      "Praktykuj głębokie oddychanie, aby wzmocnić energię Płuc i przygotować organizm na chłodniejsze miesiące.",
+      "Zima to czas Wody i Nerek. Odpoczywaj więcej i kładź się wcześniej spać, aby zregenerować esencję Jing.",
+      "Jedz ciepłe, gotowane posiłki. Zupy, gulasze i pieczone warzywa korzeniowe ogrzeją Twoje ciało od wewnątrz.",
+      "Wspieraj Nerki, jedząc czarny sezam, fasolę adzuki, orzechy włoskie i wodorosty."
+    ]
+  },
+  "herbsEmotions": {
+    "pageTitle": "Zioła i Emocje - Sezonowość Chińska",
+    "header": "🌿 Odkryj Świat Ziół",
+    "subheader": "Jak natura wspiera Twoje emocje.",
+    "disclaimer": "Zawsze konsultuj się ze specjalistą przed rozpoczęciem ziołoterapii.",
+    "emotionsLabel": "Emocje:",
+    "actionLabel": "Działanie:",
+    "herbs": {
+      "peppermint": {
+        "name": "Mięta Pieprzowa",
+        "emotions": "Oczyszcza umysł z frustracji i zniecierpliwienia.",
+        "action": "Pobudza, odświeża i pomaga w koncentracji. Idealna, gdy czujesz mentalne zmęczenie lub stagnację. Filiżanka naparu z mięty może przynieść natychmiastową jasność umysłu."
+      },
+      "lavender": {
+        "name": "Lawenda",
+        "emotions": "Uspokaja niepokój, łagodzi stres i napięcie nerwowe.",
+        "action": "Promuje relaks i spokojny sen. Jej zapach harmonizuje układ nerwowy. Stosuj olejek lawendowy na skronie przed snem lub dodaj kilka kropli do kąpieli."
+      },
+      "rose": {
+        "name": "Róża",
+        "emotions": "Koi smutek, żal i otwiera serce na miłość.",
+        "action": "Tradycyjnie używana do łagodzenia dolegliwości serca, zarówno fizycznych, jak i emocjonalnych. Herbata z pąków róży lub woda różana mogą podnieść na duchu."
+      },
+      "chamomile": {
+        "name": "Rumianek",
+        "emotions": "Redukuje irytację i pomaga uwolnić zmartwienia.",
+        "action": "Działa jak delikatny uścisk dla systemu nerwowego. Idealny na koniec dnia, aby wyciszyć umysł i przygotować ciało do odpoczynku."
+      }
+    }
+  },
+  "yourEnergy": {
+    "pageTitle": "Twoja Energia na Dziś - Sezonowość Chińska",
+    "checkinTitle": "Jak się dziś czujesz?",
+    "energyLevels": {
+      "high": "Wysoko",
+      "balanced": "W sam raz",
+      "low": "Nisko"
+    },
+    "tipHeader": "Twoja spersonalizowana wskazówka:",
+    "timeOfDay": {
+      "morning": {
+        "header": "Dzień Dobry!",
+        "subheader": "Poranek to czas wzrostu",
+        "description": "Twoje ciało budzi się do życia. To idealny moment na pożywne śniadanie, delikatny ruch i zaplanowanie dnia. Energia wspiera kreatywność i nowe początki.",
+        "tips": {
+          "high": "Twoja energia jest wysoka! Wykorzystaj ten pęd na najważniejsze zadania dnia. To świetny start!",
+          "balanced": "Czujesz harmonię. Utrzymaj ten stan, pijąc szklankę wody i wykonując kilka głębokich oddechów.",
+          "low": "Czujesz się ospale? Spróbuj krótkiego spaceru na świeżym powietrzu zamiast kolejnej kawy. Słońce doda Ci energii."
+        }
+      },
+      "midday": {
+        "header": "Pełnia Dnia",
+        "subheader": "Popołudnie to czas działania",
+        "description": "Twoja energia osiąga szczyt. To najlepszy czas na pracę, spotkania i intensywną aktywność. Twoje serce i układ trawienny są teraz najsilniejsze.",
+        "tips": {
+          "high": "Masz mnóstwo energii! To idealny moment na trudne zadania i podejmowanie decyzji. Działaj śmiało!",
+          "balanced": "Jesteś w dobrym rytmie. Pamiętaj o lekkim lunchu, aby nie obciążać organizmu i utrzymać ten stan.",
+          "low": "Czujesz spadek energii? Zrób 10-minutową przerwę na medytację lub posłuchaj ulubionej piosenki, aby się zresetować."
+        }
+      },
+      "evening": {
+        "header": "Dobry Wieczór",
+        "subheader": "Wieczór to czas wyciszenia",
+        "description": "Energia naturalnie opada, przygotowując ciało do odpoczynku. Skup się na relaksie, hobby i spędzaniu czasu z bliskimi. Unikaj ciężkich posiłków i intensywnych bodźców.",
+        "tips": {
+          "high": "Nadal czujesz pobudzenie? Spróbuj wyciszającej herbaty ziołowej i poczytaj książkę, aby uspokoić umysł przed snem.",
+          "balanced": "To wspaniały stan na wieczór. Ciesz się spokojem, pielęgnuj swoje pasje lub spędź miło czas z rodziną.",
+          "low": "Jesteś zmęczony/a? To naturalne. Pozwól sobie na odpoczynek. Ciepła kąpiel lub delikatne rozciąganie pomogą Ci się zrelaksować."
+        }
+      },
+      "night": {
+        "header": "Spokojnej Nocy",
+        "subheader": "Noc to czas regeneracji",
+        "description": "Twoje ciało wchodzi w tryb głębokiej odnowy. Wątroba się oczyszcza, a umysł przetwarza informacje. Zapewnij sobie ciemne i ciche otoczenie dla najlepszej jakości snu.",
+        "tips": {
+          "high": "Nie możesz zasnąć? Unikaj ekranów. Skup się na oddechu – licz powoli do czterech na wdechu i do sześciu na wydechu.",
+          "balanced": "Twój organizm jest gotowy do snu. Życzymy regenerującej nocy i wspaniałego poranka.",
+          "low": "Głębokie zmęczenie to sygnał, że potrzebujesz snu. Odpuść wszystko i pozwól sobie na pełną regenerację."
+        }
+      }
+    }
+  }
+} 

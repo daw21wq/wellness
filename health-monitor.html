@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Zdrowia - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #fdfbfb;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .scroll-container { -ms-overflow-style: none; scrollbar-width: none; }
+        .emoji-btn {
+            transition: transform 0.2s ease;
+        }
+        .emoji-btn.selected {
+            transform: scale(1.25);
+            filter: saturate(1.5);
+        }
+        .save-toast {
+            animation: fadeInOut 2.5s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- Header -->
+        <header class="p-6 text-center bg-white/30 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-800">📓 Monitor Zdrowia</h1>
+            <p class="text-sm text-gray-600">Zapisuj swoje codzienne samopoczucie</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 scroll-container p-6 space-y-6">
+            <!-- Date Picker -->
+            <div>
+                <label for="entry-date" class="block text-sm font-medium text-gray-700 mb-1">Wybierz datę wpisu:</label>
+                <input type="date" id="entry-date" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500">
+            </div>
+
+            <!-- Mood Tracker -->
+            <div class="glass-card p-4 rounded-xl">
+                <h3 class="font-semibold text-gray-700 mb-3 text-center">Jak się dziś czujesz?</h3>
+                <div id="mood-tracker" class="flex justify-around">
+                    <button class="emoji-btn text-4xl" data-mood="bardzo dobrze">😊</button>
+                    <button class="emoji-btn text-4xl" data-mood="dobrze">🙂</button>
+                    <button class="emoji-btn text-4xl" data-mood="średnio">😐</button>
+                    <button class="emoji-btn text-4xl" data-mood="słabo">😕</button>
+                    <button class="emoji-btn text-4xl" data-mood="bardzo słabo">😞</button>
+                </div>
+            </div>
+
+            <!-- Energy Level -->
+            <div class="glass-card p-4 rounded-xl">
+                <h3 class="font-semibold text-gray-700 mb-2">Poziom energii: <span id="energy-value" class="font-bold text-purple-600">3</span>/5</h3>
+                <input type="range" id="energy-slider" min="1" max="5" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            </div>
+            
+            <!-- Symptoms & Notes -->
+            <div class="space-y-4">
+                <div>
+                    <label for="symptoms" class="block text-sm font-medium text-gray-700 mb-1">Objawy fizyczne:</label>
+                    <textarea id="symptoms" rows="3" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm" placeholder="np. ból głowy, zmęczenie..."></textarea>
+                </div>
+                <div>
+                    <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Dodatkowe notatki:</label>
+                    <textarea id="notes" rows="3" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm" placeholder="np. co jadłem/am, jak spałem/am..."></textarea>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <button id="save-btn" class="w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-full hover:bg-purple-700 transition-colors shadow-lg">
+                Zapisz dzisiejszy wpis
+            </button>
+
+            <!-- Recent Entries -->
+            <div class="pt-4">
+                <h3 class="font-semibold text-gray-700 mb-2">Ostatnie wpisy:</h3>
+                <div id="recent-entries" class="space-y-2">
+                    <p class="text-sm text-gray-500">Brak zapisanych wpisów.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const dateInput = document.getElementById('entry-date');
+    const moodTracker = document.getElementById('mood-tracker');
+    const energySlider = document.getElementById('energy-slider');
+    const energyValue = document.getElementById('energy-value');
+    const symptomsInput = document.getElementById('symptoms');
+    const notesInput = document.getElementById('notes');
+    const saveBtn = document.getElementById('save-btn');
+    const recentEntriesContainer = document.getElementById('recent-entries');
+
+    let selectedMood = null;
+
+    // --- UTILS ---
+    const getTodayString = () => new Date().toISOString().split('T')[0];
+
+    // --- DATA HANDLING ---
+    const saveEntry = (date) => {
+        if (!date) return;
+        const entry = {
+            mood: selectedMood,
+            energy: energySlider.value,
+            symptoms: symptomsInput.value.trim(),
+            notes: notesInput.value.trim()
+        };
+        localStorage.setItem(`health-log-${date}`, JSON.stringify(entry));
+        showToast('Zapisano pomyślnie!');
+        renderRecentEntries();
+    };
+
+    const loadEntry = (date) => {
+        resetForm();
+        if (!date) return;
+        const entryJSON = localStorage.getItem(`health-log-${date}`);
+        if (!entryJSON) return;
+
+        const entry = JSON.parse(entryJSON);
+        
+        // Load mood
+        selectedMood = entry.mood;
+        moodTracker.querySelectorAll('.emoji-btn').forEach(btn => {
+            btn.classList.toggle('selected', btn.dataset.mood === selectedMood);
+        });
+
+        // Load energy
+        energySlider.value = entry.energy;
+        energyValue.textContent = entry.energy;
+
+        // Load text areas
+        symptomsInput.value = entry.symptoms;
+        notesInput.value = entry.notes;
+    };
+
+    const renderRecentEntries = () => {
+        const entries = Object.keys(localStorage)
+            .filter(key => key.startsWith('health-log-'))
+            .sort()
+            .reverse();
+        
+        recentEntriesContainer.innerHTML = '';
+
+        if (entries.length === 0) {
+            recentEntriesContainer.innerHTML = '<p class="text-sm text-gray-500">Brak zapisanych wpisów.</p>';
+            return;
+        }
+
+        entries.slice(0, 5).forEach(key => {
+            const date = key.replace('health-log-', '');
+            const entry = JSON.parse(localStorage.getItem(key));
+            const moodEmoji = moodTracker.querySelector(`[data-mood="${entry.mood}"]`)?.textContent || '📝';
+
+            const entryEl = document.createElement('div');
+            entryEl.className = 'flex items-center justify-between bg-white p-2 rounded-lg shadow-sm cursor-pointer hover:bg-gray-50';
+            entryEl.innerHTML = `
+                <div>
+                    <span class="font-semibold">${date}</span>
+                    <span class="text-sm text-gray-600 ml-2">${moodEmoji} Energia: ${entry.energy}/5</span>
+                </div>
+                <button class="text-red-500 text-sm hover:text-red-700" data-date="${date}">&times;</button>
+            `;
+            entryEl.querySelector('div').addEventListener('click', () => {
+                dateInput.value = date;
+                loadEntry(date);
+            });
+            entryEl.querySelector('button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if(confirm(`Czy na pewno chcesz usunąć wpis z dnia ${date}?`)) {
+                    localStorage.removeItem(`health-log-${date}`);
+                    renderRecentEntries();
+                    if(dateInput.value === date) resetForm();
+                }
+            });
+            recentEntriesContainer.appendChild(entryEl);
+        });
+    };
+
+    const resetForm = () => {
+        selectedMood = null;
+        moodTracker.querySelectorAll('.emoji-btn').forEach(btn => btn.classList.remove('selected'));
+        energySlider.value = 3;
+        energyValue.textContent = '3';
+        symptomsInput.value = '';
+        notesInput.value = '';
+    };
+
+    // --- EVENT LISTENERS ---
+    dateInput.addEventListener('change', () => loadEntry(dateInput.value));
+    
+    moodTracker.addEventListener('click', (e) => {
+        const target = e.target.closest('.emoji-btn');
+        if (!target) return;
+        
+        selectedMood = target.dataset.mood;
+        moodTracker.querySelectorAll('.emoji-btn').forEach(btn => btn.classList.remove('selected'));
+        target.classList.add('selected');
+    });
+
+    energySlider.addEventListener('input', () => {
+        energyValue.textContent = energySlider.value;
+    });
+
+    saveBtn.addEventListener('click', () => saveEntry(dateInput.value));
+
+    // --- INITIALIZATION ---
+    dateInput.value = getTodayString();
+    loadEntry(getTodayString());
+    renderRecentEntries();
+});
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'save-toast fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-500 text-white font-bold py-2 px-6 rounded-full shadow-lg';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        document.body.removeChild(toast);
+    }, 2500);
+}
+</script>
+</body>
+</html> 

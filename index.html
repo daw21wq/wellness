@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sezonowość Chińska - Witaj!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #7b78b5;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .main-card {
+            background: #ffffff;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
+            height: 480px;
+        }
+        .content-wrapper {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .hidden-view {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div id="main-card" class="main-card relative max-w-sm w-full rounded-3xl shadow-2xl">
+        <!-- Welcome View -->
+        <div id="welcome-view" class="content-wrapper">
+            <h1 class="text-4xl font-bold text-gray-800 text-center mb-4">
+                <span class="text-4xl">🌸</span> Sezonowość Chińska
+            </h1>
+            <p class="text-gray-600 text-center mb-10">Aplikacja wellness łącząca zdrowie, przepisy i rytuały</p>
+            <button id="start-journey-btn" class="w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                🚀 Rozpocznij podróż
+            </button>
+            <div class="text-center mt-8 text-gray-500 text-sm">
+                <p>Demo loginy:</p>
+                <p>User: <span class="font-semibold">user@test.pl</span> / haslo123</p>
+                <p>Admin: <span class="font-semibold">admin</span> / admin</p>
+            </div>
+        </div>
+
+        <!-- Login View -->
+        <div id="login-view" class="content-wrapper hidden-view">
+            <button id="back-btn" class="absolute top-6 left-6 text-gray-500 hover:text-gray-800 text-lg"><i class="fas fa-arrow-left"></i> Wróć</button>
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Zaloguj się</h2>
+            <form id="login-form" class="w-full space-y-5">
+                <input id="email" type="text" placeholder="E-mail lub login" class="w-full p-4 bg-gray-100 rounded-xl border-2 border-transparent focus:bg-white focus:border-blue-500 focus:outline-none transition">
+                <input id="password" type="password" placeholder="Hasło" class="w-full p-4 bg-gray-100 rounded-xl border-2 border-transparent focus:bg-white focus:border-blue-500 focus:outline-none transition">
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    Zaloguj
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 translate-y-10 transition-all duration-300"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeView = document.getElementById('welcome-view');
+            const loginView = document.getElementById('login-view');
+            const startBtn = document.getElementById('start-journey-btn');
+            const backBtn = document.getElementById('back-btn');
+            const loginForm = document.getElementById('login-form');
+            const toast = document.getElementById('toast');
+
+            startBtn.addEventListener('click', () => {
+                welcomeView.classList.add('hidden-view');
+                loginView.classList.remove('hidden-view');
+            });
+
+            backBtn.addEventListener('click', () => {
+                loginView.classList.add('hidden-view');
+                welcomeView.classList.remove('hidden-view');
+            });
+            
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                let userToLogin = null;
+
+                if (email === 'admin' && password === 'admin') {
+                    userToLogin = {
+                        name: 'Anna',
+                        email: 'admin@example.com',
+                        avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80',
+                        isAdmin: true
+                    };
+                    showToast('✅ Zalogowano jako Administrator!', 'success');
+                } else if (email === 'user@test.pl' && password === 'haslo123') {
+                     userToLogin = {
+                        name: 'Jan',
+                        email: 'user@test.pl',
+                        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80',
+                        isAdmin: false
+                    };
+                    showToast('✅ Zalogowano pomyślnie!', 'success');
+                }
+
+                if (userToLogin) {
+                    localStorage.setItem('currentUser', JSON.stringify(userToLogin));
+                    setTimeout(() => {
+                        window.location.href = 'user-panel.html';
+                    }, 1500);
+                } else {
+                    showToast('Błędne dane logowania!', 'error');
+                }
+            });
+
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                toast.className = toast.className.replace(/bg-\w+-500/, `bg-${type === 'success' ? 'green' : 'red'}-500`);
+                toast.classList.remove('opacity-0', 'translate-y-10');
+                
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-10');
+                }, 2500);
+            }
+        });
+    </script>
+</body>
+</html>

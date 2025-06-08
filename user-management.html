@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Zarządzanie Użytkownikami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 25%, #e8f5e8 50%, #fff3e0 75%, #fce4ec 100%);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .status-premium { background-color: #fef08a; color: #854d0e; }
+      .status-free { background-color: #d1d5db; color: #374151; }
+      .status-admin { background-color: #fda4af; color: #881337; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="glass-card p-6 md:p-8 w-full max-w-4xl">
+      <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Zarządzanie Użytkownikami</h2>
+        <div class="flex items-center gap-4 w-full md:w-auto">
+          <input type="text" id="search-bar" placeholder="Szukaj użytkownika..." class="w-full md:w-64 px-3 py-2 bg-white/80 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          <button id="add-user-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">Dodaj</button>
+        </div>
+      </div>
+      
+      <div id="user-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+        <!-- User items will be injected here by JS -->
+      </div>
+  </div>
+
+  <!-- Edit/Add User Modal -->
+  <div id="user-modal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center">
+    <div class="glass-card p-8 rounded-lg shadow-xl w-full max-w-md">
+      <h3 id="modal-title" class="text-xl font-bold mb-6">Edytuj Użytkownika</h3>
+      <input type="hidden" id="user-id">
+      <div class="space-y-4">
+        <div>
+          <label for="user-name" class="text-sm font-medium text-gray-600">Nazwa</label>
+          <input type="text" id="user-name" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div>
+          <label for="user-email" class="text-sm font-medium text-gray-600">Email</label>
+          <input type="email" id="user-email" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div>
+          <label for="user-subscription" class="text-sm font-medium text-gray-600">Subskrypcja</label>
+          <select id="user-subscription" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+            <option value="Free">Free</option>
+            <option value="Premium">Premium</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-8 flex gap-4">
+        <button id="save-user-btn" class="w-full bg-gradient-to-r from-blue-500 to-sky-500 text-white font-bold py-2 px-4 rounded-lg">Zapisz</button>
+        <button id="cancel-modal-btn" class="w-full bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg">Anuluj</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-10 right-10 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const userList = document.getElementById('user-list');
+      const searchBar = document.getElementById('search-bar');
+      const addUserBtn = document.getElementById('add-user-btn');
+      const modal = document.getElementById('user-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const cancelBtn = document.getElementById('cancel-modal-btn');
+      const saveBtn = document.getElementById('save-user-btn');
+      const toast = document.getElementById('toast');
+
+      let users = [];
+      const USERS_STORAGE_KEY = 'appUsers';
+
+      const mockUsers = [
+        { id: 1, name: 'Anna Nowak', email: 'anna.nowak@example.com', subscription: 'Premium' },
+        { id: 2, name: 'Piotr Kowalski', email: 'piotr.kowalski@example.com', subscription: 'Free' },
+        { id: 3, name: 'Jan Wiśniewski', email: 'jan.wisniewski@example.com', subscription: 'Admin' },
+        { id: 4, name: 'Katarzyna Wójcik', email: 'katarzyna.wojcik@example.com', subscription: 'Free' },
+        { id: 5, name: 'Marek Lewandowski', email: 'marek.lewandowski@example.com', subscription: 'Premium' },
+      ];
+
+      function showToast(message, isError = false) {
+        toast.textContent = message;
+        toast.className = `fixed bottom-10 right-10 py-2 px-4 rounded-lg shadow-lg text-white ${isError ? 'bg-red-500' : 'bg-green-500'}`;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+      }
+
+      function renderUsers(filter = '') {
+        userList.innerHTML = '';
+        const filteredUsers = users.filter(u => u.name.toLowerCase().includes(filter.toLowerCase()) || u.email.toLowerCase().includes(filter.toLowerCase()));
+        
+        if (filteredUsers.length === 0) {
+          userList.innerHTML = `<p class="text-center text-gray-500">Brak użytkowników.</p>`;
+          return;
+        }
+
+        filteredUsers.forEach(user => {
+          const userElement = document.createElement('div');
+          userElement.className = 'p-3 bg-white/60 rounded-lg flex items-center justify-between transition-all hover:bg-white/90 hover:shadow-md';
+          userElement.innerHTML = `
+            <div>
+              <p class="font-semibold text-gray-800">${user.name}</p>
+              <p class="text-sm text-gray-600">${user.email}</p>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="status-badge status-${user.subscription.toLowerCase()}">${user.subscription}</span>
+              <button class="edit-btn text-blue-600 hover:text-blue-800" data-id="${user.id}">Edytuj</button>
+              <button class="delete-btn text-red-600 hover:text-red-800" data-id="${user.id}">Usuń</button>
+            </div>
+          `;
+          userList.appendChild(userElement);
+        });
+      }
+
+      function openModal(user = null) {
+        modal.classList.remove('hidden');
+        if (user) {
+          modalTitle.textContent = 'Edytuj Użytkownika';
+          document.getElementById('user-id').value = user.id;
+          document.getElementById('user-name').value = user.name;
+          document.getElementById('user-email').value = user.email;
+          document.getElementById('user-subscription').value = user.subscription;
+        } else {
+          modalTitle.textContent = 'Dodaj Użytkownika';
+          document.getElementById('user-id').value = '';
+          document.getElementById('user-name').value = '';
+          document.getElementById('user-email').value = '';
+          document.getElementById('user-subscription').value = 'Free';
+        }
+      }
+
+      function closeModal() {
+        modal.classList.add('hidden');
+      }
+      
+      function saveUsers() {
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+        renderUsers(searchBar.value);
+      }
+
+      function loadUsers() {
+        const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
+        users = storedUsers ? JSON.parse(storedUsers) : mockUsers;
+        renderUsers();
+      }
+
+      addUserBtn.addEventListener('click', () => openModal());
+      cancelBtn.addEventListener('click', closeModal);
+      searchBar.addEventListener('input', (e) => renderUsers(e.target.value));
+
+      saveBtn.addEventListener('click', () => {
+        const id = document.getElementById('user-id').value;
+        const name = document.getElementById('user-name').value.trim();
+        const email = document.getElementById('user-email').value.trim();
+        const subscription = document.getElementById('user-subscription').value;
+
+        if (!name || !email) {
+          showToast('Nazwa i email są wymagane!', true);
+          return;
+        }
+
+        if (id) { // Editing existing user
+          const user = users.find(u => u.id == id);
+          user.name = name;
+          user.email = email;
+          user.subscription = subscription;
+        } else { // Adding new user
+          const newId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+          users.push({ id: newId, name, email, subscription });
+        }
+        
+        saveUsers();
+        closeModal();
+        showToast('Użytkownik zapisany!');
+      });
+
+      userList.addEventListener('click', (e) => {
+        const id = e.target.dataset.id;
+        if (e.target.classList.contains('edit-btn')) {
+          const user = users.find(u => u.id == id);
+          openModal(user);
+        }
+        if (e.target.classList.contains('delete-btn')) {
+          if (confirm('Czy na pewno chcesz usunąć tego użytkownika?')) {
+            users = users.filter(u => u.id != id);
+            saveUsers();
+            showToast('Użytkownik usunięty!');
+          }
+        }
+      });
+      
+      loadUsers();
+    });
+  </script>
+</body>
+</html> 

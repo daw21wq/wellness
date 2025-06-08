@@ -1,0 +1,217 @@
+{
+  "userPanel": {
+    "greeting": "Welcome",
+    "subGreeting": "A beautiful day for wellness",
+    "searchPlaceholder": "Search in the app...",
+    "notificationsTitle": "Notifications",
+    "notif1Title": "New recipe added!",
+    "notif1Desc": "Try a delicious pumpkin dish.",
+    "notif2Title": "Your energy is high",
+    "notif2Desc": "A perfect day for outdoor exercise.",
+    "notif3Title": "The Premium Zone awaits",
+    "notif3Desc": "Discover new meditations and tips.",
+    "notifViewAll": "View all",
+    "centralQuestion": "What seasonal activity do you want to choose? 🌸",
+    "centralQuestionSub": "Discover harmony with nature",
+    "seasonalRecipe": "Seasonal Recipe",
+    "seasonalActivity": "Seasonal Activity",
+    "dailyTip": "Tip of the day",
+    "herbsAndEmotions": "Herbs & Emotions",
+    "goPremium": "Go Premium",
+    "unlockAll": "Unlock everything",
+    "inspirationsTitle": "Today's inspirations",
+    "yourEnergy": "Your energy for today",
+    "yourEnergyDesc": "High - a perfect time for activity",
+    "recommendedProducts": "Recommended products",
+    "recommendedProductsDesc": "Seasonal ingredients and rituals",
+    "toastWelcome": "🌸 Welcome to the Chinese Seasonality App!",
+    "toastLang": "The language change option will be available soon!"
+  },
+  "seasonalEnergy": {
+    "pageTitle": "Season's Energy",
+    "footer": "Live in the rhythm of nature, every day.",
+    "seasons": {
+      "Wiosna": {
+        "title": "Spring Energy", "header": "Spring Energy", "subheader": "A time of renewal and growth",
+        "organEmotion": "<strong>Liver and Gallbladder:</strong> Associated with emotions like anger and frustration, but also creativity and planning. Ensure the free flow of energy by avoiding fatty foods and alcohol.",
+        "tips": ["Start your day with a glass of water with lemon.", "Eat more green vegetables (spinach, kale, broccoli).", "Focus on movement: walks, yoga, stretching.", "Practice patience and letting go of grudges."]
+      },
+      "Lato": {
+        "title": "Summer Joy", "header": "Summer Energy", "subheader": "A time of expansion and joy",
+        "organEmotion": "<strong>Heart and Small Intestine:</strong> The center of joy, love, and consciousness. Imbalance can lead to anxiety or depression. Nurture relationships and laugh often.",
+        "tips": ["Eat light and cooling foods: watermelons, cucumbers, salads.", "Stay hydrated by drinking plenty of water (avoid ice-cold drinks).", "Wake up early to take advantage of daylight.", "Find time for fun and meetings with friends."]
+      },
+      "PozneLato": {
+          "title": "Late Summer Harmony", "header": "Harvest Energy", "subheader": "A time of abundance and stability",
+          "organEmotion": "<strong>Spleen and Stomach:</strong> Responsible for digestion and assimilation of both food and information. Associated with worry. Eat regularly to support them.",
+          "tips": ["Consume naturally sweet vegetables: pumpkin, carrots, sweet potatoes.", "Eat warm, cooked meals that are easy to digest.", "Avoid excess dairy, sugar, and raw foods.", "Practice meditation to calm racing thoughts."]
+      },
+      "Jesien": {
+          "title": "Autumn Reflection", "header": "Autumn Energy", "subheader": "A time of tidying and gathering",
+          "organEmotion": "<strong>Lungs and Large Intestine:</strong> Associated with sadness and grief, but also with the ability to let go. It's a time to slow down and reflect on what serves us.",
+          "tips": ["Eat cooked, warming dishes, like soups and root vegetables.", "Include white vegetables in your diet: cauliflower, turnip, garlic.", "Keep your skin moisturized and drink herbal teas.", "Practice deep breathing and tidy up your space."]
+      },
+      "Zima": {
+          "title": "Winter Calm", "header": "Winter Energy", "subheader": "A time of rest and regeneration",
+          "organEmotion": "<strong>Kidneys and Bladder:</strong> They store our life essence (Jing). Associated with fear and the will to live. This is a key time for regenerating strength.",
+          "tips": ["Sleep more and go to bed earlier.", "Eat warm, nutritious soups, stews, and root vegetables.", "Limit stress and intense physical exertion.", "Support your kidneys by eating walnuts, black sesame, and beans."]
+      }
+    }
+  },
+  "seasonalActivity": {
+    "pageTitle": "Seasonal Activity",
+    "footer": "Remember to listen to your body and adjust the activity to your abilities.",
+    "howTo": "How to do it:",
+    "seasons": {
+      "Wiosna": {
+        "title": "Spring Activity", "subheader": "Awaken your energy in harmony with nature.",
+        "activityTitle": "🚶‍♀️ Nature Walk",
+        "activityDesc": "Spring is a time of rebirth. Your body naturally craves more movement in the fresh air. We suggest a mindful walk to oxygenate the body and clear the mind.",
+        "activitySteps": ["Find a park or forest. Leave your phone in your pocket.", "Walk at a calm, steady pace for 15-30 minutes.", "Focus on your breath: deep inhale through the nose, long exhale through the mouth.", "Observe nature awakening: buds on trees, birds singing.", "Feel the tension release with every step."],
+        "yogaTitle": "🦁 Face Yoga: Lion's Breath",
+        "yogaDesc": "This energizing practice helps release tension from the face and jaw, stimulates circulation, and adds radiance to the complexion. Perfect for a spring awakening!",
+        "yogaSteps": ["Sit comfortably with a straight spine.", "Take a deep breath in through your nose.", "On the exhale, open your mouth wide and stick your tongue out as far as you can towards your chin.", "As you exhale, make a \"haaa\" sound, looking up towards the point between your eyebrows.", "Relax your face. Repeat 3-5 times."]
+      },
+      "Lato": {
+        "title": "Summer Activity", "subheader": "Enjoy the fullness of energy and sun.",
+        "activityTitle": "💧 Swimming or Wading in Water",
+        "activityDesc": "Summer is the Fire element. Water perfectly balances its excess, cooling the body and calming the mind. Feel the lightness and freedom.",
+        "activitySteps": ["Find a safe lake, river, or pool.", "Immerse yourself slowly, feeling the water cool your skin.", "Swim at your own pace or simply wade in the water, enjoying the moment.", "After getting out of the water, don't dry off immediately; let the sun gently dry you.", "Remember to stay hydrated – drink plenty of water."],
+        "yogaTitle": "🌬️ Cooling Breath (Shitali Pranayama)",
+        "yogaDesc": "This breathing exercise acts like an internal air conditioner. It lowers body temperature, calms emotions, and extinguishes excessive digestive fire.",
+        "yogaSteps": ["Sit up straight and relax.", "Curl your tongue into a tube. If you can't, gently clench your teeth and press your tongue against them.", "Take a slow, long inhale through the curled tongue (or teeth), as if sipping air through a straw.", "Close your mouth and exhale calmly through your nose.", "Repeat 5-10 times, feeling the coolness spread through your body."]
+      },
+      "PozneLato": {
+        "title": "Late Summer Activity", "subheader": "Find stability and grounding.",
+        "activityTitle": "👣 Barefoot Walk (Earthing)",
+        "activityDesc": "Late summer is the Earth element. Direct contact with the earth helps to shed excess worries, calm the mind, and feel stable.",
+        "activitySteps": ["Find a safe patch of grass, sand, or soil.", "Take off your shoes and socks.", "Walk slowly, focusing all your attention on the sensations in your feet.", "Feel the texture of the ground: the softness of the grass, the warmth of the sand.", "Practice for 10-15 minutes, breathing deeply into your belly."],
+        "yogaTitle": "💆‍♀️ Belly Massage",
+        "yogaDesc": "A simple self-massage that supports the Spleen and Stomach, improves digestion, and helps to dissipate accumulated worries in the body's center.",
+        "yogaSteps": ["Lie comfortably on your back.", "Warm your hands by rubbing them together.", "Place a warm hand on your abdomen, around the navel area.", "Begin to massage your belly clockwise, using slow, circular motions.", "Complete 30-50 circles, breathing calmly and deeply."]
+      },
+      "Jesien": {
+        "title": "Autumn Activity", "subheader": "Slow down and take care of your breath.",
+        "activityTitle": "🌲 Forest Bathing (Shinrin-yoku)",
+        "activityDesc": "Autumn is the time of the Lungs. Immersing yourself in the forest atmosphere, full of clean air, helps strengthen respiratory energy and let go of sadness.",
+        "activitySteps": ["Go to a forest or a large park.", "Walk very slowly, without a specific goal.", "Stop and take 5 deep, conscious breaths. Smell the scent of the forest.", "Observe the falling leaves – a symbol of letting go of what is unnecessary.", "Touch the bark of a tree, feel the moss. Be fully present."],
+        "yogaTitle": "🧘‍♀️ Deep Diaphragmatic Breathing",
+        "yogaDesc": "This is the foundation of Lung health. It strengthens Wei Qi (protective energy) and helps release accumulated emotions.",
+        "yogaSteps": ["Sit or lie down comfortably.", "Place one hand on your chest and the other on your belly.", "Take a slow inhale through your nose, directing the air so that the hand on your belly rises, while the one on your chest remains still.", "Exhale even more slowly through your nose or mouth, feeling your belly fall.", "Repeat 10-15 times, focusing on the movement of your abdomen."]
+      },
+      "Zima": {
+        "title": "Winter Activity", "subheader": "Regenerate your strength and store your essence.",
+        "activityTitle": "🔥 Gentle Stretching in the Warmth",
+        "activityDesc": "In winter, we avoid intense exercise that leads to sweating and loss of precious Yang energy. Gentle stretching at home helps maintain flexibility without cooling the body.",
+        "activitySteps": ["Find a warm, cozy place at home.", "Perform a series of gentle stretches, as if you just woke up.", "Focus on gently stretching your back and legs.", "Hold each position for 30-60 seconds, breathing calmly.", "Finish by sitting in silence for a moment."],
+        "yogaTitle": "👂 Warming Ear Massage",
+        "yogaDesc": "In Chinese medicine, the ears are closely related to the Kidneys. Massaging and warming them directly strengthens Kidney energy – our reservoir of life force.",
+        "yogaSteps": ["Sit comfortably.", "Grasp your earlobes with your thumb and forefinger.", "Begin to massage and knead your ears, moving from top to bottom.", "Massage until you feel a pleasant warmth, usually for 1-2 minutes.", "Finally, gently pull down on your earlobes."]
+      }
+    }
+  },
+  "dailyTip": {
+    "pageTitle": "Tip of the Day - Chinese Seasonality",
+    "header": "Tip of the Day",
+    "closeButton": "Close",
+    "tips": [
+      "Spring is the perfect time for a detox. Start your day with a glass of warm water with lemon to stimulate the liver.",
+      "Include more green leafy vegetables in your diet, like spinach and kale. They support the Wood element.",
+      "In spring, focus on outdoor movement. Even a short walk will help move your Qi energy.",
+      "In summer, hydrate your body by drinking plenty of water and eating juicy fruits like watermelons and melons. Avoid iced drinks.",
+      "Protect your Heart, the Fire element. Find time for joy, laughter, and relaxation with loved ones.",
+      "Eat lighter meals. Salads, steamed vegetables, and cold soups are a great choice for hot days.",
+      "Late summer is the time of the Earth element. Focus on nourishing the Spleen by eating naturally sweet vegetables: pumpkin, carrots, sweet potatoes.",
+      "This is a good time for reflection and grounding. Meditation or journaling will help you find balance.",
+      "Limit dairy, sugar, and raw food, which can weaken the digestive system and introduce 'dampness' into the body.",
+      "In autumn, strengthen your Lungs. Eat moderately pungent foods (onion, garlic, ginger) and white vegetables (cauliflower, daikon).",
+      "Tidy up your surroundings. Cleaning your home symbolizes cleansing and preparing for the period of rest.",
+      "Practice deep breathing to strengthen Lung energy and prepare your body for the colder months.",
+      "Winter is the time of the Water element and the Kidneys. Rest more and go to bed earlier to regenerate your Jing essence.",
+      "Eat warm, cooked meals. Soups, stews, and roasted root vegetables will warm your body from the inside.",
+      "Support your Kidneys by eating black sesame seeds, adzuki beans, walnuts, and seaweed."
+    ]
+  },
+  "herbsEmotions": {
+    "pageTitle": "Herbs and Emotions - Chinese Seasonality",
+    "header": "🌿 Discover the World of Herbs",
+    "subheader": "How nature supports your emotions.",
+    "disclaimer": "Always consult with a specialist before starting herbal therapy.",
+    "emotionsLabel": "Emotions:",
+    "actionLabel": "Action:",
+    "herbs": {
+      "peppermint": {
+        "name": "Peppermint",
+        "emotions": "Clears the mind of frustration and impatience.",
+        "action": "Stimulates, refreshes, and aids concentration. Ideal when you feel mental fatigue or stagnation. A cup of mint tea can bring immediate mental clarity."
+      },
+      "lavender": {
+        "name": "Lavender",
+        "emotions": "Calms anxiety, soothes stress and nervous tension.",
+        "action": "Promotes relaxation and restful sleep. Its scent harmonizes the nervous system. Apply lavender oil to your temples before sleep or add a few drops to a bath."
+      },
+      "rose": {
+        "name": "Rose",
+        "emotions": "Soothes sadness, grief, and opens the heart to love.",
+        "action": "Traditionally used to soothe heart ailments, both physical and emotional. Rosebud tea or rose water can lift the spirits."
+      },
+      "chamomile": {
+        "name": "Chamomile",
+        "emotions": "Reduces irritation and helps release worries.",
+        "action": "Acts like a gentle hug for the nervous system. Perfect at the end of the day to quiet the mind and prepare the body for rest."
+      }
+    }
+  },
+  "yourEnergy": {
+    "pageTitle": "Your Energy Today - Chinese Seasonality",
+    "checkinTitle": "How are you feeling today?",
+    "energyLevels": {
+      "high": "High",
+      "balanced": "Balanced",
+      "low": "Low"
+    },
+    "tipHeader": "Your personalized tip:",
+    "timeOfDay": {
+      "morning": {
+        "header": "Good Morning!",
+        "subheader": "Morning is a time of growth",
+        "description": "Your body is waking up. It's the perfect moment for a nutritious breakfast, gentle movement, and planning your day. Energy supports creativity and new beginnings.",
+        "tips": {
+          "high": "Your energy is high! Use this momentum for the most important tasks of the day. It's a great start!",
+          "balanced": "You feel harmonious. Maintain this state by drinking a glass of water and taking a few deep breaths.",
+          "low": "Feeling drowsy? Try a short walk outside instead of another coffee. The sun will give you energy."
+        }
+      },
+      "midday": {
+        "header": "Midday Peak",
+        "subheader": "Afternoon is a time of action",
+        "description": "Your energy is at its peak. This is the best time for work, meetings, and intense activity. Your heart and digestive system are strongest now.",
+        "tips": {
+          "high": "You have tons of energy! This is the perfect time for difficult tasks and decision-making. Act boldly!",
+          "balanced": "You're in a good rhythm. Remember a light lunch to not overload your system and maintain this state.",
+          "low": "Feeling an energy drop? Take a 10-minute break for meditation or listen to your favorite song to reset."
+        }
+      },
+      "evening": {
+        "header": "Good Evening",
+        "subheader": "Evening is a time to wind down",
+        "description": "Energy naturally subsides, preparing the body for rest. Focus on relaxation, hobbies, and spending time with loved ones. Avoid heavy meals and intense stimuli.",
+        "tips": {
+          "high": "Still feeling stimulated? Try a calming herbal tea and read a book to quiet your mind before sleep.",
+          "balanced": "This is a wonderful state for the evening. Enjoy the peace, nurture your passions, or spend quality time with family.",
+          "low": "You're tired? That's natural. Allow yourself to rest. A warm bath or gentle stretching will help you relax."
+        }
+      },
+      "night": {
+        "header": "Good Night",
+        "subheader": "Night is a time of regeneration",
+        "description": "Your body enters a mode of deep renewal. The liver cleanses itself, and the mind processes information. Ensure a dark and quiet environment for the best quality sleep.",
+        "tips": {
+          "high": "Can't sleep? Avoid screens. Focus on your breath – count slowly to four on the inhale and six on the exhale.",
+          "balanced": "Your body is ready for sleep. We wish you a regenerating night and a wonderful morning.",
+          "low": "Deep fatigue is a sign you need sleep. Let go of everything and allow yourself to fully regenerate."
+        }
+      }
+    }
+  }
+} 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Wyślij Powiadomienie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 25%, #e8f5e8 50%, #fff3e0 75%, #fce4ec 100%);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+       .form-input {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        transition: all 0.3s ease;
+      }
+      .form-input:focus {
+        background: white;
+        box-shadow: 0 0 0 2px #ec4899;
+      }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="glass-card p-6 md:p-8 w-full max-w-xl">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Wyślij Powiadomienie</h2>
+      
+      <form id="notification-form" class="space-y-6">
+        <div>
+          <label for="notification-title" class="text-sm font-medium text-gray-600">Tytuł</label>
+          <input type="text" id="notification-title" required class="form-input mt-1 block w-full px-3 py-2 rounded-md">
+        </div>
+
+        <div>
+          <label for="notification-message" class="text-sm font-medium text-gray-600">Wiadomość</label>
+          <textarea id="notification-message" rows="5" required class="form-input mt-1 block w-full px-3 py-2 rounded-md"></textarea>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium text-gray-600">Grupa docelowa</label>
+          <div class="mt-2 space-y-2">
+            <div class="flex items-center">
+                <input id="target-all" name="target" type="radio" value="all" checked class="h-4 w-4 text-pink-600 border-gray-300 focus:ring-pink-500">
+                <label for="target-all" class="ml-3 block text-sm font-medium text-gray-700">Wszyscy użytkownicy</label>
+            </div>
+            <div class="flex items-center">
+                <input id="target-premium" name="target" type="radio" value="premium" class="h-4 w-4 text-pink-600 border-gray-300 focus:ring-pink-500">
+                <label for="target-premium" class="ml-3 block text-sm font-medium text-gray-700">Tylko Premium</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 pt-4">
+            <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold py-3 px-4 rounded-lg">Wyślij</button>
+            <button type="button" onclick="window.close()" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-lg">Anuluj</button>
+        </div>
+      </form>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-10 right-10 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('notification-form');
+        const toast = document.getElementById('toast');
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('notification-title').value;
+            const target = document.querySelector('input[name="target"]:checked').value;
+            
+            showToast(`Wysyłanie powiadomienia "${title}" do grupy: ${target}...`);
+            
+            setTimeout(() => {
+                showToast(`Powiadomienie zostało wysłane!`);
+                form.reset();
+            }, 1500);
+        });
+    });
+  </script>
+</body>
+</html> 

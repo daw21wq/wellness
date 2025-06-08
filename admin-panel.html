@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Użytkownika - Smaki Sezonu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+      .dashboard-card:hover {
+        transform: scale(1.05);
+      }
+      .search-bar-container {
+        transition: all 0.3s ease-in-out;
+        max-height: 0;
+        overflow: hidden;
+        border-radius: 1.5rem; /* rounded-3xl */
+      }
+      .search-bar-container.active {
+        max-height: 100px; /* Adjust as needed */
+        margin-top: -1rem; /* -mt-4 */
+      }
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ef4444; /* red-500 */
+        color: white;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border: 2px solid white;
+      }
+      .notifications-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        width: 320px;
+        z-index: 50;
+        overflow: hidden;
+        animation: fadeIn 0.2s ease-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .dashboard-card {
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        will-change: opacity, transform;
+      }
+      .dashboard-card.hidden-card {
+        opacity: 0;
+        transform: scale(0.95);
+        pointer-events: none;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <div class="container mx-auto max-w-7xl p-4">
+      <!-- Header -->
+      <div class="flex items-center justify-between p-6 bg-white rounded-b-3xl shadow-md" style="background: linear-gradient(to right, #e0f7fa, #e8eaf6);">
+        <div class="flex items-center space-x-4">
+          <div class="relative group">
+            <img id="user-avatar" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="User Avatar" class="w-16 h-16 rounded-full border-4 border-white shadow-lg transition-transform transform group-hover:scale-110 cursor-pointer">
+            <label for="avatar-upload" class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+              <i class="fas fa-camera fa-lg"></i>
+            </label>
+            <input type="file" id="avatar-upload" class="hidden" accept="image/*">
+          </div>
+          <div>
+            <h1 id="user-name" class="text-2xl font-bold text-gray-800">Witaj, Anna!</h1>
+            <p id="user-greeting" class="text-gray-600">Piękny dzień na wellness</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2 sm:space-x-4">
+          <button id="search-btn" class="p-3 bg-white/70 rounded-full text-gray-600 hover:bg-white transition shadow">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </button>
+          <div class="relative">
+            <button id="notifications-btn" class="relative p-3 bg-white/70 rounded-full text-gray-600 hover:bg-white transition shadow">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+              <span id="notification-badge" class="notification-badge">3</span>
+            </button>
+            <div id="notifications-dropdown" class="notifications-dropdown">
+              <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="font-semibold text-gray-800">Powiadomienia</h3>
+                <button id="clear-notifications" class="text-xs text-blue-600 hover:underline">Wyczyść wszystko</button>
+              </div>
+              <div id="notification-list" class="divide-y max-h-80 overflow-y-auto">
+                <!-- JS will populate this -->
+              </div>
+              <div id="no-notifications" class="p-8 text-center text-gray-500 hidden">
+                <i class="fas fa-bell-slash fa-2x mb-2"></i>
+                <p>Brak nowych powiadomień.</p>
+              </div>
+              <div class="p-2 text-center bg-gray-50 border-t">
+                <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Zobacz wszystkie</a>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="window.location.href='settings.html'" class="p-3 bg-white/70 rounded-full text-gray-600 hover:bg-white transition shadow">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div id="search-bar-container" class="search-bar-container bg-white rounded-3xl shadow-md">
+        <div class="relative p-4">
+          <input type="text" id="search-input" placeholder="Czego szukasz w panelu?" class="w-full py-3 pl-12 pr-4 text-gray-700 bg-gray-100 border-2 border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-4">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        <!-- Dynamic cards will be filtered -->
+        <div class="dashboard-card" data-title="zarządzanie użytkownikami konta edycja usuwanie">
+          <a href="user-management.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-users text-2xl text-blue-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Zarządzanie Użytkownikami</h3>
+                <p class="text-sm text-gray-500 mt-1">Zarządzaj kontami użytkowników</p>
+              </div>
+              <div class="text-right text-blue-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="zarządzanie uprawnieniami role dostęp bezpieczeństwo">
+          <a href="permissions.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-user-shield text-2xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Zarządzanie Uprawnieniami</h3>
+                <p class="text-sm text-gray-500 mt-1">Konfiguruj role i dostęp</p>
+              </div>
+              <div class="text-right text-yellow-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="integracje ai sztuczna inteligencja openai deepseek">
+          <a href="ai-integrations.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-robot text-2xl text-purple-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Integracje AI</h3>
+                <p class="text-sm text-gray-500 mt-1">Połącz z usługami AI</p>
+              </div>
+              <div class="text-right text-purple-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="integracja stripe płatności subskrypcje faktury">
+          <a href="stripe-integrations.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fab fa-stripe-s text-2xl text-indigo-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Integracja Stripe</h3>
+                <p class="text-sm text-gray-500 mt-1">Zarządzaj płatnościami</p>
+              </div>
+              <div class="text-right text-indigo-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="eksport danych csv json raporty statystyki">
+          <a href="export-data.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-file-export text-2xl text-teal-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Eksport Danych</h3>
+                <p class="text-sm text-gray-500 mt-1">Pobierz dane w CSV/JSON</p>
+              </div>
+              <div class="text-right text-teal-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="dodaj nowy przepis jedzenie gotowanie">
+          <a href="add-recipe.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-plus text-2xl text-green-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Dodaj nowy przepis</h3>
+                <p class="text-sm text-gray-500 mt-1">Utwórz i opublikuj przepis</p>
+              </div>
+              <div class="text-right text-green-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="wyślij powiadomienie marketing push notyfikacje">
+          <a href="send-notification.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-paper-plane text-2xl text-pink-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Wyślij powiadomienie</h3>
+                <p class="text-sm text-gray-500 mt-1">Wyślij wiadomość do użytkowników</p>
+              </div>
+              <div class="text-right text-pink-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="backup danych kopia zapasowa przywracanie">
+          <a href="backup.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-save text-2xl text-orange-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Backup danych</h3>
+                <p class="text-sm text-gray-500 mt-1">Utwórz kopię zapasową</p>
+              </div>
+              <div class="text-right text-orange-500 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="dashboard-card" data-title="logi systemu dziennik zdarzeń systemowych błędy">
+          <a href="system-logs.html" class="block h-full">
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
+                  <i class="fas fa-clipboard-list text-2xl text-gray-600"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">Logi systemu</h3>
+                <p class="text-sm text-gray-500 mt-1">Dziennik zdarzeń systemowych</p>
+              </div>
+              <div class="text-right text-gray-600 font-semibold mt-4">Przejdź &rarr;</div>
+            </div>
+          </a>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        let currentUser = null;
+
+        function saveCurrentUser() {
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        function loadCurrentUser() {
+          const user = localStorage.getItem('currentUser');
+          if (!user) {
+            window.location.href = 'index.html';
+            return;
+          }
+          currentUser = JSON.parse(user);
+        }
+
+        function renderUser() {
+          document.getElementById('user-name').textContent = `Witaj, ${currentUser.name}!`;
+          if (currentUser.avatar) {
+            document.getElementById('user-avatar').src = currentUser.avatar;
+          }
+        }
+
+        // --- Notifications ---
+        const notificationsBtn = document.getElementById('notifications-btn');
+        const notificationsDropdown = document.getElementById('notifications-dropdown');
+        const notificationList = document.getElementById('notification-list');
+        const notificationBadge = document.getElementById('notification-badge');
+        const noNotificationsView = document.getElementById('no-notifications');
+        const clearNotificationsBtn = document.getElementById('clear-notifications');
+
+        let notifications = JSON.parse(localStorage.getItem('notifications')) || [
+          { id: 1, icon: 'fa-check', color: 'green', text: 'Twoje konto zostało zweryfikowane.', time: '2 godziny temu', read: false },
+          { id: 2, icon: 'fa-calendar-alt', color: 'blue', text: 'Nowy przepis "Tarta z truskawkami" został dodany.', time: '1 dzień temu', read: false },
+          { id: 3, icon: 'fa-exclamation-triangle', color: 'yellow', text: 'Twoja subskrypcja wygasa za 3 dni.', time: '2 dni temu', read: false },
+        ];
+
+        function saveNotifications() {
+          localStorage.setItem('notifications', JSON.stringify(notifications));
+        }
+
+        function renderNotifications() {
+          notificationList.innerHTML = '';
+          const unreadCount = notifications.filter(n => !n.read).length;
+
+          if (notifications.length === 0) {
+            noNotificationsView.style.display = 'block';
+            notificationList.style.display = 'none';
+          } else {
+            noNotificationsView.style.display = 'none';
+            notificationList.style.display = 'block';
+            notifications.forEach(n => {
+              const notifElement = document.createElement('a');
+              notifElement.href = '#';
+              notifElement.className = `flex items-start p-4 space-x-3 hover:bg-gray-50 ${n.read ? 'opacity-60' : ''}`;
+              notifElement.dataset.id = n.id;
+              notifElement.innerHTML = `
+                <div class="w-10 h-10 bg-${n.color}-100 text-${n.color}-600 rounded-full flex-shrink-0 flex items-center justify-center"><i class="fas ${n.icon}"></i></div>
+                <div>
+                  <p class="text-sm text-gray-700">${n.text}</p>
+                  <p class="text-xs text-gray-500">${n.time}</p>
+                </div>
+              `;
+              notifElement.addEventListener('click', (e) => {
+                e.preventDefault();
+                markNotificationAsRead(n.id);
+              });
+              notificationList.appendChild(notifElement);
+            });
+          }
+          
+          if (unreadCount > 0) {
+            notificationBadge.textContent = unreadCount;
+            notificationBadge.style.display = 'flex';
+          } else {
+            notificationBadge.style.display = 'none';
+          }
+        }
+        
+        function markNotificationAsRead(id) {
+          const notif = notifications.find(n => n.id === id);
+          if (notif) {
+            notif.read = true;
+            saveNotifications();
+            renderNotifications();
+          }
+        }
+        
+        clearNotificationsBtn.addEventListener('click', () => {
+          notifications = [];
+          saveNotifications();
+          renderNotifications();
+          notificationsDropdown.style.display = 'none';
+        });
+
+        notificationsBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          notificationsDropdown.style.display = notificationsDropdown.style.display === 'block' ? 'none' : 'block';
+          if(notificationsDropdown.style.display === 'block') {
+            // Mark all as read when opening
+            notifications.forEach(n => n.read = true);
+            saveNotifications();
+            renderNotifications();
+          }
+        });
+
+        // --- Search ---
+        const searchBtn = document.getElementById('search-btn');
+        const searchContainer = document.getElementById('search-bar-container');
+        const searchInput = document.getElementById('search-input');
+        const dashboardCards = document.querySelectorAll('.dashboard-card');
+
+        searchBtn.addEventListener('click', () => {
+          searchContainer.classList.toggle('active');
+          if (searchContainer.classList.contains('active')) {
+            searchInput.focus();
+          }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+          const searchTerm = e.target.value.toLowerCase().trim();
+          dashboardCards.forEach(card => {
+            const title = card.dataset.title.toLowerCase();
+            if (title.includes(searchTerm)) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+
+        // --- Avatar Upload ---
+        const avatarUpload = document.getElementById('avatar-upload');
+        avatarUpload.addEventListener('change', (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const newAvatarSrc = e.target.result;
+              document.getElementById('user-avatar').src = newAvatarSrc;
+              currentUser.avatar = newAvatarSrc;
+              saveCurrentUser();
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // --- Init ---
+        loadCurrentUser();
+        renderUser();
+        renderNotifications();
+
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', (e) => {
+          if (!notificationsBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+            notificationsDropdown.style.display = 'none';
+          }
+          if (!searchBtn.contains(e.target) && !searchContainer.contains(e.target) && !searchInput.contains(e.target)) {
+            searchContainer.classList.remove('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

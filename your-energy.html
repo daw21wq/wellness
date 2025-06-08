@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twoja Energia na Dziś - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.5s ease;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+        .scroll-container {
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .back-button {
+            position: absolute; top: 20px; left: 20px; z-index: 30;
+            width: 44px; height: 44px; background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .back-button:hover { transform: scale(1.1); }
+        .energy-btn { transition: all 0.2s ease; }
+        .energy-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .energy-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="phone-bg" class="phone-frame">
+        <a href="user-panel.html" class="back-button">
+            <span class="text-white text-lg font-bold">←</span>
+        </a>
+
+        <div class="relative z-10 flex-1 scroll-container p-6">
+            <header class="text-center pt-16 pb-6">
+                <div id="time-icon" class="text-6xl mb-4"></div>
+                <h1 id="time-header" class="text-4xl font-bold mb-2"></h1>
+                <p id="time-subheader" class="text-opacity-90 text-lg"></p>
+            </header>
+
+            <main class="space-y-6">
+                <div class="content-card p-5">
+                    <p id="time-description" class="text-center"></p>
+                </div>
+
+                <div class="content-card p-5">
+                    <h2 class="text-xl font-semibold mb-4 text-center">Jak się dziś czujesz?</h2>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="showTip('high')" class="energy-btn bg-white/30 rounded-lg p-3 text-center">
+                            <span class="text-2xl">😄</span>
+                            <span class="block text-sm font-semibold">Wysoko</span>
+                        </button>
+                        <button onclick="showTip('balanced')" class="energy-btn bg-white/30 rounded-lg p-3 text-center">
+                            <span class="text-2xl">😊</span>
+                            <span class="block text-sm font-semibold">W sam raz</span>
+                        </button>
+                        <button onclick="showTip('low')" class="energy-btn bg-white/30 rounded-lg p-3 text-center">
+                            <span class="text-2xl">😴</span>
+                            <span class="block text-sm font-semibold">Nisko</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="tip-container" class="hidden content-card p-5">
+                    <h3 class="font-bold mb-2 text-center">Twoja spersonalizowana wskazówka:</h3>
+                    <p id="tip-text" class="text-center text-sm"></p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getTimeOfDay() {
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 12) return 'morning';
+                if (hour >= 12 && hour < 17) return 'midday';
+                if (hour >= 17 && hour < 22) return 'evening';
+                return 'night';
+            }
+
+            const energyData = {
+                'morning': {
+                    icon: '🌅',
+                    header: 'Dzień Dobry!',
+                    subheader: 'Poranek to czas wzrostu',
+                    description: 'Twoje ciało budzi się do życia. To idealny moment na pożywne śniadanie, delikatny ruch i zaplanowanie dnia. Energia wspiera kreatywność i nowe początki.',
+                    gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                    tips: {
+                        high: 'Twoja energia jest wysoka! Wykorzystaj ten pęd na najważniejsze zadania dnia. To świetny start!',
+                        balanced: 'Czujesz harmonię. Utrzymaj ten stan, pijąc szklankę wody i wykonując kilka głębokich oddechów.',
+                        low: 'Czujesz się ospale? Spróbuj krótkiego spaceru na świeżym powietrzu zamiast kolejnej kawy. Słońce doda Ci energii.'
+                    }
+                },
+                'midday': {
+                    icon: '☀️',
+                    header: 'Pełnia Dnia',
+                    subheader: 'Popołudnie to czas działania',
+                    description: 'Twoja energia osiąga szczyt. To najlepszy czas na pracę, spotkania i intensywną aktywność. Twoje serce i układ trawienny są teraz najsilniejsze.',
+                    gradient: 'linear-gradient(135deg, #fceabb 0%, #f8b500 100%)',
+                    tips: {
+                        high: 'Masz mnóstwo energii! To idealny moment na trudne zadania i podejmowanie decyzji. Działaj śmiało!',
+                        balanced: 'Jesteś w dobrym rytmie. Pamiętaj o lekkim lunchu, aby nie obciążać organizmu i utrzymać ten stan.',
+                        low: 'Czujesz spadek energii? Zrób 10-minutową przerwę na medytację lub posłuchaj ulubionej piosenki, aby się zresetować.'
+                    }
+                },
+                'evening': {
+                    icon: '🌇',
+                    header: 'Dobry Wieczór',
+                    subheader: 'Wieczór to czas wyciszenia',
+                    description: 'Energia naturalnie opada, przygotowując ciało do odpoczynku. Skup się na relaksie, hobby i spędzaniu czasu z bliskimi. Unikaj ciężkich posiłków i intensywnych bodźców.',
+                    gradient: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
+                    tips: {
+                        high: 'Nadal czujesz pobudzenie? Spróbuj wyciszającej herbaty ziołowej i poczytaj książkę, aby uspokoić umysł przed snem.',
+                        balanced: 'To wspaniały stan na wieczór. Ciesz się spokojem, pielęgnuj swoje pasje lub spędź miło czas z rodziną.',
+                        low: 'Jesteś zmęczony/a? To naturalne. Pozwól sobie na odpoczynek. Ciepła kąpiel lub delikatne rozciąganie pomogą Ci się zrelaksować.'
+                    }
+                },
+                'night': {
+                    icon: '🌙',
+                    header: 'Spokojnej Nocy',
+                    subheader: 'Noc to czas regeneracji',
+                    description: 'Twoje ciało wchodzi w tryb głębokiej odnowy. Wątroba się oczyszcza, a umysł przetwarza informacje. Zapewnij sobie ciemne i ciche otoczenie dla najlepszej jakości snu.',
+                    gradient: 'linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%)',
+                     tips: {
+                        high: 'Nie możesz zasnąć? Unikaj ekranów. Skup się na oddechu – licz powoli do czterech na wdechu i do sześciu na wydechu.',
+                        balanced: 'Twój organizm jest gotowy do snu. Życzymy regenerującej nocy i wspaniałego poranka.',
+                        low: 'Głębokie zmęczenie to sygnał, że potrzebujesz snu. Odpuść wszystko i pozwól sobie na pełną regenerację.'
+                    }
+                }
+            };
+            
+            const currentTimeOfDay = getTimeOfDay();
+            const data = energyData[currentTimeOfDay];
+
+            document.getElementById('phone-bg').style.background = data.gradient;
+            document.getElementById('time-icon').textContent = data.icon;
+            document.getElementById('time-header').textContent = data.header;
+            document.getElementById('time-subheader').textContent = data.subheader;
+            document.getElementById('time-description').textContent = data.description;
+
+            window.showTip = (level) => {
+                const tipContainer = document.getElementById('tip-container');
+                const tipText = document.getElementById('tip-text');
+                
+                tipText.textContent = data.tips[level];
+                tipContainer.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Zarządzanie Uprawnieniami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 25%, #e8f5e8 50%, #fff3e0 75%, #fce4ec 100%);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+      .switch input { opacity: 0; width: 0; height: 0; }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+      }
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="p-8 max-w-2xl w-full">
+      <div class="flex items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Zarządzanie Uprawnieniami</h2>
+      </div>
+      
+      <div class="space-y-6">
+        <!-- Role Card: Administrator -->
+        <div class="glass-card p-5">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Administrator</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Pełny dostęp</span>
+              <label class="switch">
+                <input type="checkbox" checked disabled>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg text-gray-400">
+              <span class="font-medium">Modyfikacja ról</span>
+              <label class="switch">
+                <input type="checkbox" checked disabled>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Card: Redaktor -->
+        <div class="glass-card p-5">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Redaktor</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Zarządzanie treścią</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Zarządzanie użytkownikami</span>
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Przeglądanie statystyk</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Ustawienia płatności</span>
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Card: Użytkownik Premium -->
+        <div class="glass-card p-5">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Użytkownik Premium</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Dostęp do strefy Premium</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+             <div class="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+              <span class="font-medium text-gray-700">Brak reklam</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <div class="mt-8 flex gap-4">
+        <button class="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+          Zapisz uprawnienia
+        </button>
+        <button onclick="window.close()" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+          Zamknij
+        </button>
+      </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="hidden fixed bottom-10 right-10 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg transition-opacity duration-300">
+    Uprawnienia zostały zapisane!
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const saveButton = document.querySelector('button.bg-gradient-to-r');
+      const permissionToggles = document.querySelectorAll('.switch input[type="checkbox"]:not([disabled])');
+
+      const defaultPermissions = {
+        redaktor: {
+          'zarzadzanie-trescia': true,
+          'zarzadzanie-uzytkownikami': false,
+          'przegladanie-statystyk': true,
+          'ustawienia-platnosci': false,
+        },
+        premium: {
+          'dostep-premium': true,
+          'brak-reklam': true,
+        }
+      };
+
+      function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('hidden');
+        toast.classList.add('opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('hidden');
+        }, 3000);
+      }
+
+      function savePermissions() {
+        const currentPermissions = {
+          redaktor: {},
+          premium: {}
+        };
+        
+        document.querySelectorAll('.glass-card').forEach(card => {
+          const roleTitle = card.querySelector('h3').textContent.toLowerCase().replace('użytkownik ', '');
+          if (roleTitle === 'administrator') return;
+
+          card.querySelectorAll('.switch input[type="checkbox"]').forEach(toggle => {
+            const permissionName = toggle.closest('.flex').querySelector('span').textContent.toLowerCase().replace(/ /g, '-');
+            currentPermissions[roleTitle][permissionName] = toggle.checked;
+          });
+        });
+
+        localStorage.setItem('userPermissions', JSON.stringify(currentPermissions));
+        showToast();
+      }
+
+      function loadPermissions() {
+        const savedPermissions = JSON.parse(localStorage.getItem('userPermissions'));
+        const permissionsToLoad = savedPermissions || defaultPermissions;
+
+        Object.keys(permissionsToLoad).forEach(role => {
+          Object.keys(permissionsToLoad[role]).forEach(permission => {
+            const toggle = document.querySelector(`[data-role='${role}'][data-permission='${permission}']`);
+            if (toggle) {
+              toggle.checked = permissionsToLoad[role][permission];
+            }
+          });
+        });
+      }
+      
+      // Add data attributes to toggles to make them easier to select
+      document.querySelectorAll('.glass-card').forEach(card => {
+        const roleTitle = card.querySelector('h3').textContent.toLowerCase().replace('użytkownik ', '');
+         if (roleTitle === 'administrator') return;
+        card.querySelectorAll('.switch input[type="checkbox"]').forEach(toggle => {
+            const permissionName = toggle.closest('.flex').querySelector('span').textContent.toLowerCase().replace(/ /g, '-');
+            toggle.setAttribute('data-role', roleTitle);
+            toggle.setAttribute('data-permission', permissionName);
+        });
+      });
+
+
+      saveButton.addEventListener('click', savePermissions);
+      loadPermissions();
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Logi Systemu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 25%, #e8f5e8 50%, #fff3e0 75%, #fce4ec 100%);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      .log-badge {
+        padding: 0.1rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .log-info { background-color: #3b82f6; color: white; }
+      .log-warning { background-color: #f59e0b; color: white; }
+      .log-error { background-color: #ef4444; color: white; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="glass-card p-6 md:p-8 w-full max-w-4xl">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Logi Systemu</h2>
+      
+      <div class="mb-4 flex gap-4">
+        <input type="text" id="log-search" placeholder="Filtruj logi..." class="w-full px-3 py-2 bg-white/80 border border-gray-300 rounded-md">
+        <select id="log-level-filter" class="px-3 py-2 bg-white/80 border border-gray-300 rounded-md">
+            <option value="all">Wszystkie</option>
+            <option value="INFO">Info</option>
+            <option value="WARNING">Warning</option>
+            <option value="ERROR">Error</option>
+        </select>
+      </div>
+      
+      <div id="log-container" class="space-y-2 max-h-[60vh] overflow-y-auto bg-gray-900 text-white font-mono p-4 rounded-lg">
+        <!-- Log entries will be injected here -->
+      </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const logContainer = document.getElementById('log-container');
+        const searchInput = document.getElementById('log-search');
+        const levelFilter = document.getElementById('log-level-filter');
+
+        const mockLogs = [
+            { timestamp: new Date(Date.now() - 2000), level: 'INFO', message: 'User anna.nowak@example.com logged in successfully.' },
+            { timestamp: new Date(Date.now() - 5000), level: 'INFO', message: 'Recipe "Wiosenna zupa" was added.' },
+            { timestamp: new Date(Date.now() - 15000), level: 'WARNING', message: 'Stripe API latency detected: 1200ms.' },
+            { timestamp: new Date(Date.now() - 25000), level: 'INFO', message: 'User piotr.kowalski@example.com updated their profile.' },
+            { timestamp: new Date(Date.now() - 35000), level: 'ERROR', message: 'Failed to process payment for user katarzyna.wojcik@example.com. Reason: Insufficient funds.' },
+            { timestamp: new Date(Date.now() - 45000), level: 'INFO', message: 'System backup completed.' },
+            { timestamp: new Date(Date.now() - 55000), level: 'ERROR', message: 'OpenAI API connection failed: timeout.' },
+        ];
+
+        function renderLogs() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedLevel = levelFilter.value;
+
+            const filteredLogs = mockLogs.filter(log => {
+                const matchesSearch = log.message.toLowerCase().includes(searchTerm);
+                const matchesLevel = selectedLevel === 'all' || log.level === selectedLevel;
+                return matchesSearch && matchesLevel;
+            });
+            
+            logContainer.innerHTML = '';
+            filteredLogs.forEach(log => {
+                const logElement = document.createElement('div');
+                logElement.innerHTML = `
+                    <span class="text-gray-500">${log.timestamp.toLocaleTimeString('pl-PL')}</span>
+                    <span class="log-badge log-${log.level.toLowerCase()} mx-2">${log.level}</span>
+                    <span>${log.message}</span>
+                `;
+                logContainer.appendChild(logElement);
+            });
+        }
+        
+        searchInput.addEventListener('input', renderLogs);
+        levelFilter.addEventListener('change', renderLogs);
+
+        renderLogs();
+    });
+  </script>
+</body>
+</html> 

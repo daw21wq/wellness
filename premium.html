@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strefa Premium - Subskrypcja</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f2937 0%, #37475a 100%);
+        }
+        .premium-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+        .gold-text { color: #FFD700; }
+        .subscribe-button {
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        .subscribe-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="premium-card text-white max-w-md mx-auto p-8 shadow-2xl">
+        <div class="text-center mb-6">
+            <div class="text-6xl mb-4 gold-text">💎</div>
+            <h1 class="text-3xl font-bold mb-1">Odblokuj Pełen Potencjał</h1>
+            <p class="text-white/70">Dołącz do Strefy Premium i uzyskaj nieograniczony dostęp do wszystkich funkcji.</p>
+        </div>
+
+        <div class="mb-8">
+            <div class="feature-item">
+                <i class="fas fa-check-circle fa-lg gold-text"></i>
+                <span>Nieograniczona liczba akcji w aplikacji</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle fa-lg gold-text"></i>
+                <span>Spersonalizowane porady i plany wellness</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle fa-lg gold-text"></i>
+                <span>Dostęp do ekskluzywnych treści i medytacji</span>
+            </div>
+             <div class="feature-item">
+                <i class="fas fa-check-circle fa-lg gold-text"></i>
+                <span>Priorytetowe wsparcie</span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button id="subscribe-btn" class="subscribe-button font-bold py-3 px-8 rounded-full w-full text-lg">
+                Subskrybuj za 19,99 zł / msc
+            </button>
+            <p class="text-xs text-white/50 mt-3">Możesz anulować w dowolnym momencie.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const subscribeBtn = document.getElementById('subscribe-btn');
+            const apiUrl = 'http://localhost:3000'; // Adres naszego serwera
+            let stripe;
+
+            // Krok 1: Pobierz klucz publiczny ze swojego serwera
+            fetch(`${apiUrl}/config`)
+                .then((result) => result.json())
+                .then((data) => {
+                    if(data.publicKey) {
+                        stripe = Stripe(data.publicKey);
+                        subscribeBtn.disabled = false;
+                    } else {
+                        console.error('Nie udało się załadować klucza publicznego Stripe.');
+                        subscribeBtn.textContent = 'Błąd konfiguracji';
+                    }
+                })
+                .catch(error => {
+                    console.error("Błąd połączenia z serwerem:", error);
+                    subscribeBtn.textContent = 'Błąd serwera';
+                    subscribeBtn.style.background = 'grey';
+                });
+
+            // Krok 2: Po kliknięciu utwórz sesję płatności
+            subscribeBtn.addEventListener('click', () => {
+                subscribeBtn.disabled = true;
+                subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Przechodzenie do płatności...';
+
+                fetch(`${apiUrl}/create-checkout-session`, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(session => {
+                        if (session.sessionId) {
+                            // Krok 3: Przekieruj do strony płatności Stripe
+                            return stripe.redirectToCheckout({ sessionId: session.sessionId });
+                        } else {
+                            throw new Error('Nie udało się utworzyć sesji płatności.');
+                        }
+                    })
+                    .then(result => {
+                        // Jeśli wystąpi błąd po stronie klienta, wyświetl go
+                        if (result.error) {
+                            alert(result.error.message);
+                            subscribeBtn.disabled = false;
+                            subscribeBtn.textContent = 'Subskrybuj za 19,99 zł / msc';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Wystąpił błąd. Upewnij się, że serwer płatności jest uruchomiony.');
+                        subscribeBtn.disabled = false;
+                        subscribeBtn.textContent = 'Subskrybuj za 19,99 zł / msc';
+                    });
+            });
+
+            // Domyślnie przycisk jest wyłączony, dopóki Stripe się nie załaduje
+            subscribeBtn.disabled = true;
+        });
+    </script>
+</body>
+</html> 

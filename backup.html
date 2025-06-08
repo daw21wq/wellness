@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Backup Danych</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 25%, #e8f5e8 50%, #fff3e0 75%, #fce4ec 100%);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="glass-card p-6 md:p-8 w-full max-w-lg text-center">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Backup Danych</h2>
+      <p class="text-gray-600 mb-8">Utwórz pełną kopię zapasową wszystkich danych aplikacji, w tym użytkowników, przepisów i ustawień.</p>
+      
+      <button id="backup-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+        Utwórz i pobierz backup
+      </button>
+
+      <p class="text-xs text-gray-500 mt-4">Ostatni backup: <span id="last-backup-date">Nigdy</span></p>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-10 right-10 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const backupBtn = document.getElementById('backup-btn');
+        const lastBackupDateElem = document.getElementById('last-backup-date');
+        const toast = document.getElementById('toast');
+
+        const LAST_BACKUP_KEY = 'lastBackupDate';
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function loadLastBackupDate() {
+            const lastBackup = localStorage.getItem(LAST_BACKUP_KEY);
+            if (lastBackup) {
+                lastBackupDateElem.textContent = new Date(lastBackup).toLocaleString('pl-PL');
+            }
+        }
+        
+        function downloadFile(content, fileName) {
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        backupBtn.addEventListener('click', () => {
+            showToast('Przygotowywanie backupu...');
+            
+            // Symulacja zbierania danych
+            const allData = {
+                users: JSON.parse(localStorage.getItem('appUsers')) || [],
+                permissions: JSON.parse(localStorage.getItem('userPermissions')) || {},
+                // inne dane...
+            };
+            
+            setTimeout(() => {
+                const date = new Date();
+                const dateString = date.toISOString().slice(0, 10);
+                const fileName = `sezonowosc-backup-${dateString}.json`;
+                downloadFile(JSON.stringify(allData, null, 2), fileName);
+                
+                localStorage.setItem(LAST_BACKUP_KEY, date.toISOString());
+                lastBackupDateElem.textContent = date.toLocaleString('pl-PL');
+                showToast('Backup został pomyślnie utworzony i pobrany!');
+            }, 2000);
+        });
+
+        loadLastBackupDate();
+    });
+  </script>
+</body>
+</html> 

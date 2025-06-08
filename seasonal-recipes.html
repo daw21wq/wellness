@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przepisy Sezonowe - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.5s ease;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+        }
+        .scroll-container {
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .back-button {
+            position: absolute; top: 20px; left: 20px; z-index: 30;
+            width: 44px; height: 44px; background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; color: white;
+        }
+        .back-button:hover { transform: scale(1.1); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="phone-bg" class="phone-frame">
+        <a href="user-panel.html" class="back-button">
+            <span class="text-lg font-bold">←</span>
+        </a>
+
+        <div class="relative z-10 flex-1 scroll-container text-white p-6">
+            <header class="text-center pt-16 pb-6">
+                <div id="season-icon" class="text-6xl mb-4"></div>
+                <h1 id="season-header" class="text-4xl font-bold mb-2">Przepisy na</h1>
+                <p id="season-subheader" class="text-opacity-90 text-lg"></p>
+            </header>
+
+            <main id="recipes-container" class="space-y-6">
+                <!-- Recipes will be injected here by JS -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getSeason() {
+                const date = new Date();
+                const month = date.getMonth(); // 0-11
+                const day = date.getDate();
+                if ((month === 2 && day >= 20) || month === 3 || month === 4 || (month === 5 && day < 6)) return 'Wiosna';
+                if ((month === 5 && day >= 6) || month === 6 || (month === 7 && day < 20)) return 'Lato';
+                if ((month === 7 && day >= 20) || (month === 8 && day < 22)) return 'PozneLato';
+                if ((month === 8 && day >= 22) || month === 9 || month === 10 || (month === 11 && day < 21)) return 'Jesien';
+                return 'Zima';
+            }
+
+            const seasonalRecipes = {
+                'Wiosna': {
+                    icon: '🥗',
+                    subheader: 'Wiosnę',
+                    gradient: 'linear-gradient(135deg, #a8e063 0%, #56ab2f 100%)',
+                    recipes: [
+                        { name: 'Sałatka z Młodym Szpinakiem i Rzodkiewką', desc: 'Lekka, orzeźwiająca sałatka, która poruszy zastaną zimową energię i wesprze Twoją wątrobę. Idealna na lunch.' },
+                        { name: 'Zupa z Pokrzywy', desc: 'Oczyszczająca krew i pełna witamin zupa. Prawdziwy zastrzyk wiosennej energii dla Twojego organizmu.' },
+                        { name: 'Dorsz na parze z zielonymi szparagami', desc: 'Delikatne, lekkostrawne danie, które odżywia bez obciążania układu trawiennego.' }
+                    ]
+                },
+                'Lato': {
+                    icon: '🍉',
+                    subheader: 'Lato',
+                    gradient: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+                     recipes: [
+                        { name: 'Chłodnik z Ogórka i Awokado', desc: 'Perfekcyjnie chłodzący i nawadniający. Dostarcza zdrowych tłuszczów i ochłody w upalne dni.' },
+                        { name: 'Grillowane brzoskwinie z miętą', desc: 'Słodki, lekki deser, który wspiera element Serca i dostarcza radości.' },
+                        { name: 'Sałatka z arbuzem i serem feta', desc: 'Słono-słodkie połączenie, które doskonale gasi pragnienie i uzupełnia elektrolity.' }
+                    ]
+                },
+                'PozneLato': {
+                    icon: '🎃',
+                    subheader: 'Późne Lato',
+                    gradient: 'linear-gradient(135deg, #ff8c00 0%, #ffc72c 100%)',
+                    recipes: [
+                        { name: 'Krem z pieczonej dyni z imbirem', desc: 'Aksamitna zupa, która wzmacnia Śledzionę i Żołądek, poprawiając trawienie. Imbir dodaje rozgrzewającej nuty.' },
+                        { name: 'Pieczone bataty z cynamonem', desc: 'Naturalnie słodkie i odżywcze, idealne jako dodatek do obiadu lub zdrowa przekąska. Wspierają element Ziemi.' },
+                        { name: 'Congee (kleik ryżowy) z prosem', desc: 'Najlepsze śniadanie dla wzmocnienia centrum. Łatwostrawne, odżywcze i harmonizujące.' }
+                    ]
+                },
+                 'Jesien': {
+                    icon: '🍐',
+                    subheader: 'Jesień',
+                    gradient: 'linear-gradient(135deg, #c1c1c1 0%, #8e8e8e 100%)',
+                    recipes: [
+                        { name: 'Pieczona gruszka z kardamonem', desc: 'Deser, który nawilża Płuca i chroni przed jesienną suchością. Kardamon dodaje ciepła.' },
+                        { name: 'Zupa-krem z kalafiora z gałką muszkatołową', desc: 'Białe warzywa wspierają Płuca. Ta zupa jest sycąca, ale nie obciążająca.' },
+                        { name: 'Rozgrzewający gulasz z warzyw korzeniowych', desc: 'Gromadzi energię wewnątrz ciała, przygotowując na nadchodzącą zimę.' }
+                    ]
+                },
+                'Zima': {
+                    icon: '🍲',
+                    subheader: 'Zimę',
+                    gradient: 'linear-gradient(135deg, #6a85b6 0%, #bac8e0 100%)',
+                    recipes: [
+                        { name: 'Długo gotowany rosół mocy (na kościach)', desc: 'Esencjonalny wywar, który głęboko odżywia Nerki i buduje esencję Jing. Podstawa zimowej diety.' },
+                        { name: 'Czarna fasola z wodorostami kombu', desc: 'Wzmacnia element Wody, wspiera kości i dodaje energii życiowej.' },
+                        { name: 'Kompot z suszonych owoców z goździkami', desc: 'Rozgrzewający napój, który nawilża i wspiera Yang Nerek. Idealny na zimowe wieczory.' }
+                    ]
+                }
+            };
+            
+            const currentSeasonName = getSeason();
+            const data = seasonalRecipes[currentSeasonName];
+            const container = document.getElementById('recipes-container');
+
+            document.getElementById('phone-bg').style.background = data.gradient;
+            document.getElementById('season-icon').textContent = data.icon;
+            document.getElementById('season-subheader').textContent = data.subheader;
+            
+            let animationDelay = 0.2;
+            data.recipes.forEach(recipe => {
+                const recipeCard = document.createElement('div');
+                recipeCard.className = 'content-card p-5';
+                recipeCard.style.animation = `fadeInUp 0.5s ease-out ${animationDelay}s both`;
+                animationDelay += 0.2;
+
+                recipeCard.innerHTML = `
+                    <h3 class="text-xl font-bold mb-2">${recipe.name}</h3>
+                    <p class="text-sm text-white opacity-90">${recipe.desc}</p>
+                `;
+                container.appendChild(recipeCard);
+            });
+        });
+    </script>
+</body>
+</html> 

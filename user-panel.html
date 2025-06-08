@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Panel Użytkownika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="i18n.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      .user-panel-phone-frame {
+        width: 375px;
+        height: 812px;
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #a8edea 50%, #fed6e3 75%, #d299c2 100%);
+        border-radius: 40px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e2e8f0;
+        margin: 2rem;
+        display: inline-flex;
+        flex-direction: column;
+      }
+
+      .animated-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #a8edea 50%, #fed6e3 75%, #d299c2 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 12s ease infinite;
+      }
+
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounceIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.3);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+        70% {
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        33% {
+          transform: translateY(-10px) rotate(1deg);
+        }
+        66% {
+          transform: translateY(5px) rotate(-1deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes ripple {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+        70% {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      .bubble {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        animation: float 4s ease-in-out infinite;
+      }
+
+      .bubble:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .bubble:active {
+        animation: ripple 0.6s ease-out;
+      }
+
+      .bubble::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.5s;
+      }
+
+      .bubble:hover::before {
+        left: 100%;
+      }
+
+      .premium-bubble {
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+        border: 2px solid #ffd700;
+        position: relative;
+      }
+
+      .premium-bubble::after {
+        content: '✨';
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        font-size: 20px;
+        animation: pulse 2s infinite;
+      }
+
+      .floating-element {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .clickable {
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .clickable:hover {
+        transform: scale(1.1);
+      }
+
+      .clickable:active {
+        transform: scale(0.95);
+        animation: ripple 0.3s ease-out;
+      }
+
+      .scroll-container {
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .scroll-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4757;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        animation: pulse 2s infinite;
+      }
+      .ai-chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .ai-chat-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .ai-chat-container {
+            width: 375px; /* Same as phone frame */
+            height: 700px; /* A bit smaller */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .ai-chat-modal.visible .ai-chat-container {
+            transform: scale(1);
+        }
+        .ai-chat-history {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .ai-chat-history::-webkit-scrollbar {
+            display: none;
+        }
+        .ai-message, .user-message {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            max-width: 90%;
+        }
+        .user-message {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+        .message-bubble {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 15px;
+            color: white;
+        }
+        .user-message .message-bubble {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            display: inline-block;
+            animation: bob 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: -0.4s; }
+        @keyframes bob {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+        .mic-listening i {
+          color: #ff5252;
+          animation: pulseMic 1.5s infinite;
+        }
+        @keyframes pulseMic {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.2); }
+          100% { transform: scale(1); }
+        }
+        .calendar-modal-container {
+          width: 360px;
+          max-height: 85vh;
+          background: linear-gradient(135deg, #485563 0%, #29323c 100%);
+          border-radius: 20px;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+        }
+        .season-entry {
+          padding: 12px;
+          border-radius: 10px;
+          margin-bottom: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+          background: rgba(255,255,255,0.05);
+        }
+        .season-entry.highlight {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.4);
+          transform: scale(1.02);
+        }
+
+        .notification-panel {
+            position: absolute;
+            top: 110px; /* Position below the header */
+            right: 24px;
+            width: 300px;
+            background: rgba(30, 41, 59, 0.8); /* Dark glass */
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s ease-out;
+            color: white;
+        }
+
+        .notification-panel.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-modal-container {
+            width: 360px;
+            background: linear-gradient(135deg, #37475a 0%, #1f2937 100%);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            animation: bounceIn 0.5s ease-out;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: -60px auto 20px; /* Pulls it up */
+            border-radius: 50%;
+            border: 4px solid white;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        #profile-modal-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #upload-avatar-label {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background: #4F46E5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        #upload-avatar-label:hover {
+            transform: scale(1.1);
+        }
+    </style>
+  </head>
+  <body class="m-0 p-0 flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="user-panel-phone-frame">
+      <div class="animated-bg"></div>
+      
+      <!-- Floating decorative elements -->
+      <div class="absolute top-16 left-6 w-12 h-12 bg-white bg-opacity-20 rounded-full floating-element" style="animation-delay: 0s;"></div>
+      <div class="absolute top-24 right-8 w-8 h-8 bg-white bg-opacity-15 rounded-full floating-element" style="animation-delay: 2s;"></div>
+      <div class="absolute bottom-32 left-10 w-16 h-16 bg-white bg-opacity-10 rounded-full floating-element" style="animation-delay: 4s;"></div>
+      <div class="absolute bottom-48 right-6 w-10 h-10 bg-white bg-opacity-25 rounded-full floating-element" style="animation-delay: 6s;"></div>
+      
+      <!-- Header -->
+      <div class="relative z-10 px-6 pt-12 pb-4" style="animation: fadeInUp 0.8s ease-out;">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center space-x-3">
+            <div id="profile-button" class="w-12 h-12 bg-white bg-opacity-30 rounded-full flex items-center justify-center glass-card clickable p-1">
+              <img id="header-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMiAxMkMyMiA2LjQ4IDE3LjUyIDIgMTIgMlpNMTIgNUMxMy42NiA1IDE1IDYuMzQgMTUgOEMxNSA5LjY2IDEzLjY2IDExIDEyIDExQzEwLjM0IDExIDkgOS42NiA5IDhDOSA2LjM0IDEwLjM0IDUgMTIgNVpNMTIgMTkuMkM5LjUgMTkuMiA3LjI5IDE3LjkyIDYgMTUuOThDNi4wMyAxMy45OSAxMCAxMi45IDEyIDEyLjlDMTMuOTkgMTIuOSAxNy45NyAxMy45OSAxOCAxNS45OEMxNi43MSAxNy45MiAxNC41IDE5LjIgMTIgMTkuMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="User Avatar" class="w-full h-full rounded-full object-cover">
+            </div>
+            <div>
+              <h2 id="user-greeting" class="text-white font-bold text-lg">Witaj, Anna!</h2>
+              <p class="text-white text-opacity-80 text-sm">Piękny dzień na wellness</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div id="search-button" class="relative clickable">
+              <div class="w-10 h-10 bg-white bg-opacity-30 rounded-full flex items-center justify-center glass-card">
+                <span class="text-lg">🔍</span>
+              </div>
+            </div>
+            <div id="notification-button" class="relative clickable">
+              <div class="w-10 h-10 bg-white bg-opacity-30 rounded-full flex items-center justify-center glass-card">
+                <span class="text-lg">🔔</span>
+              </div>
+              <div id="notification-badge" class="notification-badge">3</div>
+            </div>
+            <div class="clickable">
+              <div class="w-10 h-10 bg-white bg-opacity-30 rounded-full flex items-center justify-center glass-card">
+                <span class="text-xs font-bold text-white">PL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications Panel -->
+      <div id="notification-panel" class="notification-panel">
+          <div class="p-3 border-b border-white/10 font-bold text-sm">Powiadomienia</div>
+          <div id="notification-list">
+              <!-- Notifications will be generated by JS -->
+          </div>
+          <div class="p-2 text-center text-xs text-white/50 hover:text-white cursor-pointer">
+              Oznacz wszystkie jako przeczytane
+          </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="relative z-10 flex-1 scroll-container">
+        
+        <!-- Central Question -->
+        <div class="px-6 mb-8" style="animation: fadeInUp 1s ease-out 0.3s both;">
+          <div class="text-center glass-card p-6">
+            <h1 id="main-question" class="text-2xl font-bold text-white mb-2 clickable">
+              Jaką sezonową aktywność chcesz wybrać? 🌸
+            </h1>
+            <p class="text-white text-opacity-90">Odkryj harmonię z naturą</p>
+          </div>
+        </div>
+
+        <!-- Activity Bubbles -->
+        <div class="px-6 mb-8" style="animation: fadeInUp 1s ease-out 0.5s both;">
+          <div class="grid grid-cols-2 gap-4">
+            <div id="calendar-tile" class="bubble p-4 text-center clickable"><div class="text-3xl mb-2">☯️</div><p class="font-semibold">Kalendarz TCM</p></div>
+            <div id="face-yoga-tile" class="bubble p-4 text-center clickable"><div class="text-3xl mb-2">💆‍♀️</div><p class="font-semibold text-gray-800">Joga Twarzy</p></div>
+            <div id="daily-tip-tile" class="bubble p-4 text-center clickable"><div class="text-3xl mb-2">🌱</div><p class="font-semibold text-gray-800">Wskazówka dnia</p></div>
+            <div id="premium-tile" class="bubble premium-bubble p-4 text-center"><div class="text-3xl mb-2">💎</div><p class="font-semibold text-gray-800">Strefa Premium</p></div>
+            <div id="herbs-tile" class="bubble p-4 text-center"><div class="text-3xl mb-2">🌿</div><p class="font-semibold text-gray-800">Zioła i emocje</p></div>
+            <div id="quiz-tile" class="bubble p-4 text-center clickable"><div class="text-3xl mb-2">✨</div><p class="font-semibold text-gray-800">Odkryj swój żywioł</p></div>
+          </div>
+          
+          <div class="mt-4">
+            <div id="health-monitor-tile" class="bubble p-4 text-center" style="animation-delay: 0.7s;">
+              <div class="text-3xl mb-2">📓</div>
+              <p class="font-semibold text-gray-800">Monitor zdrowia</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inspiration Cards -->
+        <div class="px-6 mb-8" style="animation: fadeInUp 1s ease-out 0.7s both;">
+          <h3 class="text-white font-bold text-lg mb-4">Dzisiejsze inspiracje</h3>
+          
+          <div class="space-y-4">
+            <div id="inspiration-card-1" class="glass-card p-4 clickable">
+              <div class="flex items-center space-x-3">
+                <div class="icon-container w-12 h-12 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xl">🌸</span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-white font-semibold">Wiosenna energia</h4>
+                  <p class="text-white text-opacity-80 text-sm">Czas na detoks i odnowę</p>
+                </div>
+                <div class="text-white text-opacity-60">
+                  <span class="text-xl">→</span>
+                </div>
+              </div>
+            </div>
+            
+            <div id="inspiration-card-2" class="glass-card p-4 clickable">
+              <div class="flex items-center space-x-3">
+                <div class="icon-container w-12 h-12 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xl">⚡</span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-white font-semibold">Twoja energia na dziś</h4>
+                  <p class="text-white text-opacity-80 text-sm">Wysoka - idealny czas na aktywność</p>
+                </div>
+                <div class="text-white text-opacity-60">
+                  <span class="text-xl">→</span>
+                </div>
+              </div>
+            </div>
+            
+            <div id="inspiration-card-3" class="glass-card p-4 clickable">
+              <div class="flex items-center space-x-3">
+                <div class="icon-container w-12 h-12 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xl">🛍️</span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-white font-semibold">Polecane produkty</h4>
+                  <p class="text-white text-opacity-80 text-sm">Sezonowe składniki i rytuały</p>
+                </div>
+                <div class="text-white text-opacity-60">
+                  <span class="text-xl">→</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Help Bubble -->
+        <div class="fixed bottom-6 right-6 z-20">
+          <div id="help-bubble" class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg clickable">
+            <span class="text-white text-xl">?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inspiration Detail Modal -->
+    <div id="inspiration-modal" class="ai-chat-modal">
+        <div class="calendar-modal-container" style="background: linear-gradient(135deg, #485563 0%, #29323c 100%);">
+            <div id="inspiration-modal-header" class="p-4 border-b border-white/20 flex items-center justify-between">
+                <h3 id="inspiration-modal-title" class="text-white text-lg font-bold flex items-center"></h3>
+                <button id="close-inspiration-modal" class="text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div id="inspiration-modal-content" class="p-6 overflow-y-auto text-white">
+                <!-- Content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Face Yoga Modal -->
+    <div id="face-yoga-modal" class="ai-chat-modal">
+        <div class="calendar-modal-container">
+            <div class="p-4 border-b border-white/20 flex items-center justify-between">
+                <h3 class="text-white text-lg font-bold">Techniki Jogi Twarzy</h3>
+                <button id="close-face-yoga-modal" class="text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div id="face-yoga-modal-content" class="p-6 overflow-y-auto text-white">
+                <!-- Content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TCM Calendar Modal -->
+    <div id="calendar-modal" class="ai-chat-modal">
+        <div class="calendar-modal-container">
+            <div class="p-4 border-b border-white/20 flex items-center justify-between">
+                <h3 class="text-white text-lg font-bold">Kalendarz Medycyny Chińskiej</h3>
+                <button id="close-calendar-modal" class="text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div id="calendar-modal-content" class="p-6 overflow-y-auto text-white">
+                <!-- Content will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Modal -->
+    <div id="ai-chat-modal" class="ai-chat-modal">
+        <div class="ai-chat-container">
+            <div class="p-4 border-b border-white/20 flex items-center justify-between">
+                <h3 class="text-white text-lg font-bold">Zapytaj o sezonowe porady</h3>
+                <button id="close-ai-chat" class="text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div id="ai-chat-history" class="flex-1 p-4 overflow-y-auto space-y-4">
+                <div class="ai-message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-bubble">
+                        <p>Cześć! Jestem Twoim wirtualnym asystentem. Zapytaj mnie o przepis lub ćwiczenia na obecną porę roku.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-white/20">
+                <div class="flex items-center space-x-2 glass-card p-1 rounded-full">
+                    <button id="ai-chat-mic" class="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center clickable">
+                        <i class="fas fa-microphone text-white text-xl"></i>
+                    </button>
+                    <input id="ai-chat-input" type="text" placeholder="Zadaj pytanie..." class="flex-1 bg-transparent text-white placeholder-white/70 outline-none px-3 py-2">
+                    <button id="ai-chat-send" class="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center clickable">
+                        <span class="text-xl text-white">➤</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="ai-chat-modal">
+        <div class="profile-modal-container">
+            <div id="profile-modal-header" class="p-4 border-b border-white/20 flex items-center justify-between">
+                <h3 class="text-white text-lg font-bold">Edytuj Profil</h3>
+                <button id="close-profile-modal" class="text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto text-white">
+                <div class="profile-image-wrapper">
+                    <img id="profile-modal-image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMiAxMkMyMiA2LjQ4IDE3LjUyIDIgMTIgMlpNMTIgNUMxMy42NiA1IDE1IDYuMzQgMTUgOEMxNSA5LjY2IDEzLjY2IDExIDEyIDExQzEwLjM0IDExIDkgOS42NiA5IDhDOSA2LjM0IDEwLjM0IDUgMTIgNVpNMTIgMTkuMkM5LjUgMTkuMiA3LjI5IDE3LjkyIDYgMTUuOThDNi4wMyAxMy45OSAxMCAxMi45IDEyIDEyLjlDMTMuOTkgMTIuOSAxNy45NyAxMy45OSAxOCAxNS45OEMxNi43MSAxNy45MiAxNC41IDE5LjIgMTIgMTkuMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="User Avatar">
+                    <input type="file" id="upload-avatar-input" class="hidden" accept="image/*">
+                    <label for="upload-avatar-input" id="upload-avatar-label" title="Zmień zdjęcie">
+                        <i class="fas fa-camera text-white"></i>
+                    </label>
+                </div>
+                <div class="text-center mb-6">
+                    <label for="username-input" class="block text-sm font-medium text-white/70 mb-2">Twoja nazwa</label>
+                    <input type="text" id="username-input" class="w-full bg-white/10 rounded-lg px-4 py-2 text-center text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+                 <button id="save-profile-button" class="w-full bg-indigo-600 hover:bg-indigo-700 rounded-lg py-3 font-bold transition-colors">
+                    Zapisz zmiany
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+        
+        // --- Elements ---
+        const searchButton = document.getElementById('search-button');
+        const calendarTile = document.getElementById('calendar-tile');
+        const faceYogaTile = document.getElementById('face-yoga-tile');
+        const dailyTipTile = document.getElementById('daily-tip-tile');
+        const premiumTile = document.getElementById('premium-tile');
+        const herbsTile = document.getElementById('herbs-tile');
+        const quizTile = document.getElementById('quiz-tile');
+        const healthMonitorTile = document.getElementById('health-monitor-tile');
+        const helpBubble = document.getElementById('help-bubble');
+
+        const aiChatModal = document.getElementById('ai-chat-modal');
+        const closeAiChatButton = document.getElementById('close-ai-chat');
+        const aiChatInput = document.getElementById('ai-chat-input');
+        const aiChatSendButton = document.getElementById('ai-chat-send');
+        const aiChatHistory = document.getElementById('ai-chat-history');
+        const aiChatMicButton = document.getElementById('ai-chat-mic');
+        
+        const calendarModal = document.getElementById('calendar-modal');
+        const closeCalendarModal = document.getElementById('close-calendar-modal');
+        const calendarModalContent = document.getElementById('calendar-modal-content');
+
+        const faceYogaModal = document.getElementById('face-yoga-modal');
+        const closeFaceYogaModal = document.getElementById('close-face-yoga-modal');
+        const faceYogaModalContent = document.getElementById('face-yoga-modal-content');
+        
+        const inspirationModal = document.getElementById('inspiration-modal');
+        const closeInspirationModalBtn = document.getElementById('close-inspiration-modal');
+
+        const notificationButton = document.getElementById('notification-button');
+        const notificationPanel = document.getElementById('notification-panel');
+        const notificationList = document.getElementById('notification-list');
+        const notificationBadge = document.getElementById('notification-badge');
+
+        const profileButton = document.getElementById('profile-button');
+        const profileModal = document.getElementById('profile-modal');
+        const closeProfileModalBtn = document.getElementById('close-profile-modal');
+        const headerAvatar = document.getElementById('header-avatar');
+        const modalAvatar = document.getElementById('profile-modal-image');
+        const userGreeting = document.getElementById('user-greeting');
+        const usernameInput = document.getElementById('username-input');
+        const avatarUploadInput = document.getElementById('upload-avatar-input');
+        const saveProfileBtn = document.getElementById('save-profile-button');
+        const defaultAvatar = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyQzIgMTcuNTIgNi40OCAyMiAxMiAyMkMxNy41MiAyMiAyMiAxNy41MiAyMiAxMkMyMiA2LjQ4IDE3LjUyIDIgMTIgMlpNMTIgNUMxMy42NiA1IDE1IDYuMzQgMTUgOEMxNSA5LjY2IDEzLjY2IDExIDEyIDExQzEwLjM0IDExIDkgOS42NiA5IDhDOSA2LjM_4IDEwLjM0IDUgMTIgNVpNMTIgMTkuMkM5LjUgMTkuMiA3LjI5IDE3LjkyIDYgMTUuOThDNi4wMyAxMy45OSAxMCAxMi45IDEyIDEyLjlDMTMuOTkgMTIuOSAxNy45NyAxMy45OSAxOCAxNS45OEMxNi43MSAxNy45MiAxNC41IDE5LjIgMTIgMTkuMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=';
+
+        // --- Sample Notifications Data ---
+        const notifications = [
+            { icon: '☀️', text: 'Nowa inspiracja na Lato jest już dostępna!', time: '2 min temu' },
+            { icon: '🌿', text: 'Odkryj zioła, które pomogą Ci się zrelaksować.', time: '1 godz. temu' },
+            { icon: '📓', text: 'Pamiętaj o uzupełnieniu swojego Monitora Zdrowia.', time: 'wczoraj' }
+        ];
+
+        // --- Subscription & Action Limit Logic ---
+        const FREE_ACTIONS_LIMIT = 7;
+
+        function getActionCount() {
+            return parseInt(localStorage.getItem('actionCount') || '0');
+        }
+
+        function getSubscriptionStatus() {
+            return localStorage.getItem('isSubscribed') === 'true';
+        }
+
+        function incrementActionCount() {
+            let count = getActionCount();
+            if (!getSubscriptionStatus() && !isAdmin) {
+                localStorage.setItem('actionCount', ++count);
+            }
+            return count;
+        }
+
+        function handleProtectedAction(actionFunction) {
+            const count = getActionCount();
+            const isSubscribed = getSubscriptionStatus();
+
+            if (isAdmin || isSubscribed || count < FREE_ACTIONS_LIMIT) {
+                incrementActionCount();
+                actionFunction();
+            } else {
+                showToast(`Wykorzystałeś ${FREE_ACTIONS_LIMIT} darmowych akcji. Zasubskrybuj, aby kontynuować!`);
+                setTimeout(() => {
+                     const newWindow = window.open('premium.html', 'Strefa Premium', 'width=500,height=600,resizable=yes,scrollbars=yes');
+                     if (!newWindow) showToast('❗️Nie udało się otworzyć okna. Sprawdź ustawienia przeglądarki.');
+                }, 1000);
+            }
+        }
+        
+        function checkForSuccessfulSubscription() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+
+            if (sessionId) {
+                localStorage.setItem('isSubscribed', 'true');
+                localStorage.setItem('actionCount', '0'); // Reset count after subscribing
+                showToast('🎉 Dziękujemy za subskrypcję! Pełen dostęp został odblokowany.');
+                // Clean the URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // --- Helper Functions ---
+        function animateClick() {
+          if (navigator.vibrate) {
+            navigator.vibrate(50);
+          }
+        }
+
+        function showToast(message) {
+          const toast = document.createElement('div');
+          toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 backdrop-blur-lg rounded-full px-6 py-3 shadow-lg z-30';
+          toast.style.animation = 'fadeInUp 0.3s ease-out';
+          toast.innerHTML = `<p class="text-gray-800 font-medium">${message}</p>`;
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            toast.style.animation = 'fadeInUp 0.3s ease-out reverse';
+            setTimeout(() => {
+              if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+              }
+            }, 300);
+          }, 2000);
+        }
+
+        function populateNotifications() {
+            notificationList.innerHTML = '';
+            notifications.forEach(notif => {
+                const item = document.createElement('div');
+                item.className = 'notification-item';
+                item.innerHTML = `
+                    <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-xl">${notif.icon}</div>
+                    <div class="flex-1">
+                        <p class="text-sm">${notif.text}</p>
+                        <p class="text-xs text-white/50">${notif.time}</p>
+                    </div>
+                `;
+                notificationList.appendChild(item);
+            });
+            notificationBadge.textContent = notifications.length;
+            notificationBadge.style.display = notifications.length > 0 ? 'flex' : 'none';
+        }
+
+        function loadUserProfile() {
+            const username = localStorage.getItem('username') || 'Anna';
+            const avatar = localStorage.getItem('userAvatar') || defaultAvatar;
+            userGreeting.textContent = `Witaj, ${username}!`;
+            usernameInput.value = username;
+            headerAvatar.src = avatar;
+            modalAvatar.src = avatar;
+        }
+
+        function saveUserProfile() {
+            const newUsername = usernameInput.value.trim();
+            if (newUsername) {
+                localStorage.setItem('username', newUsername);
+            }
+            // The avatar is saved separately upon selection
+            loadUserProfile(); // Reload to update everything
+            showToast('✅ Profil zaktualizowany!');
+            profileModal.classList.remove('visible');
+        }
+
+        // --- Data ---
+        const inspirationCardsData = {
+            'Wiosna': [
+                { icon: '🌸', title: 'Wiosenna energia', subtitle: 'Czas na detoks i odnowę', gradient: 'linear-gradient(to right, #ec4899, #8b5cf6)', details: 'Wiosna to idealny moment, by oczyścić organizm po zimie. Skup się na lekkich, odżywczych posiłkach, pij więcej wody i wprowadź do diety nowalijki. To pomoże Twojej Wątrobie, która jest teraz najaktywniejsza. Pamiętaj o smaku kwaśnym, który ją wspiera (np. woda z cytryną).' },
+                { icon: '🌱', title: 'Nowe początki', subtitle: 'Zasadź intencje na nowy cykl', gradient: 'linear-gradient(to right, #4ade80, #3b82f6)', details: 'Tak jak natura budzi się do życia, tak i Ty możesz zasiać nowe intencje. Zastanów się, co chcesz osiągnąć w nadchodzących miesiącach. Zapisz swoje cele, stwórz mapę marzeń lub po prostu wizualizuj swoje pragnienia. Energia wiosny sprzyja nowym projektom.' },
+                { icon: '🏃‍♀️', title: 'Porusz swoje Qi', subtitle: 'Więcej ruchu na świeżym powietrzu', gradient: 'linear-gradient(to right, #facc15, #f97316)', details: 'Zastój po zimie? Czas na ruch! Wyjdź na zewnątrz - spacer, jogging, jazda na rowerze. Ruch na świeżym powietrzu, zwłaszcza w wietrzny dzień, doskonale porusza zastoje energii Qi Wątroby, co przekłada się na lepszy nastrój i więcej energii.' }
+            ],
+            'Lato': [
+                { icon: '☀️', title: 'Energia Słońca', subtitle: 'Ciesz się pełnią życia i radością', gradient: 'linear-gradient(to right, #f97316, #ef4444)', details: 'Lato to pełnia energii Yang. Ciesz się słońcem, ale z umiarem. To czas na aktywność, zabawę i spontaniczność. Twoje Serce jest teraz w szczytowej formie, więc pielęgnuj radość i dziel się nią z innymi. Śmiech to najlepsze lekarstwo dla Serca!' },
+                { icon: '❤️', title: 'Pielęgnuj relacje', subtitle: 'To czas spotkań i otwartego serca', gradient: 'linear-gradient(to right, #ef4444, #ec4899)', details: 'Lato sprzyja spotkaniom towarzyskim. Pielęgnuj relacje z bliskimi, rozmawiaj, dziel się emocjami. To odżywia Twoje Serce i Ducha Shen. Zadbaj o to, by w Twoim otoczeniu byli ludzie, którzy wnoszą do Twojego życia pozytywną energię.' },
+                { icon: '🍉', title: 'Jedz sezonowo', subtitle: 'Korzystaj z darów lata', gradient: 'linear-gradient(to right, #84cc16, #22c55e)', details: 'Twoja dieta latem powinna być lekka i nawadniająca. Jedz dużo owoców, takich jak arbuzy i truskawki, oraz warzyw. Unikaj ciężkich i tłustych potraw, które obciążają organizm w upalne dni. Pamiętaj o smaku gorzkim, który wspiera Serce.' }
+            ],
+            'Jesień': [
+                { icon: '🍂', title: 'Czas do wewnątrz', subtitle: 'Zwolnij i zadbaj o Płuca', gradient: 'linear-gradient(to right, #d97706, #a16207)', details: 'Jesień to czas transformacji i odpuszczania, tak jak drzewa zrzucają liście. To idealny moment na introspekcję. Zadbaj o swoje Płuca, które są teraz wrażliwe. Włącz do diety produkty o smaku ostrym, np. imbir, czosnek, rzodkiew.' },
+                { icon: '🌬️', title: 'Ochrona przed wiatrem', subtitle: 'Unikaj "złodzieja Qi"', gradient: 'linear-gradient(to right, #64748b, #475569)', details: 'Wiatr w medycynie chińskiej jest jednym z głównych czynników patogennych. Chroń kark i plecy przed przewianiem. Noszenie szalika to prosty i skuteczny sposób na zachowanie cennej energii Wei Qi, która chroni Cię przed infekcjami.' },
+                { icon: '🍐', title: 'Nawilżaj od środka', subtitle: 'Jedz gruszki i pij ciepłe napoje', gradient: 'linear-gradient(to right, #eab308, #ca8a04)', details: 'Jesienna suchość może osłabić Płuca. Jedz produkty, które nawilżają organizm, takie jak gruszki, miód, migdały. Pij ciepłe kompoty i herbaty ziołowe. To pomoże Ci utrzymać równowagę i zdrowie w tym sezonie.' }
+            ],
+            'Zima': [
+                { icon: '❄️', title: 'Głęboki odpoczynek', subtitle: 'Oszczędzaj energię i regeneruj Nerki', gradient: 'linear-gradient(to right, #3b82f6, #2563eb)', details: 'Zima to czas maksymalnego skupienia energii Yin. To okres odpoczynku, snu i regeneracji. Oszczędzaj siły, aby na wiosnę mieć energię do działania. Twoje Nerki, źródło życiowej esencji, potrzebują teraz Twojej troski.' },
+                { icon: '🍲', title: 'Ciepłe pożywienie', subtitle: 'Jedz rozgrzewające zupy i gulasze', gradient: 'linear-gradient(to right, #a855f7, #9333ea)', details: 'Twoje ciało potrzebuje ciepła. Jedz długo gotowane, rozgrzewające potrawy. Zupy mocy, buliony, kasze, warzywa korzeniowe to podstawa zimowej diety. Unikaj surowych i zimnych pokarmów, które wychładzają organizm.' },
+                { icon: '🕯️', title: 'Spokój i cisza', subtitle: 'Praktykuj medytację i wyciszenie', gradient: 'linear-gradient(to right, #4f46e5, #6366f1)', details: 'Zima zaprasza do świata wewnętrznego. To idealny czas na medytację, jogę, czytanie książek przy kominku. Znajdź czas na ciszę i spokój, aby naładować swoje baterie i odnaleźć wewnętrzną harmonię. To inwestycja w Twoje zdrowie na cały rok.' }
+            ]
+        };
+
+        // --- Seasonal Logic, Modal Population, etc. (Implementations needed) ---
+        function getCurrentSeason() {
+            const date = new Date();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            if ((month === 3 && day >= 21) || month === 4 || month === 5 || (month === 6 && day < 21)) return { season: 'Wiosna', emoji: '🌸', color: '#4ade80' };
+            if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) return { season: 'Lato', emoji: '☀️', color: '#f97316' };
+            if ((month === 9 && day >= 23) || month === 10 || month === 11 || (month === 12 && day < 22)) return { season: 'Jesień', emoji: '🍂', color: '#a16207' };
+            return { season: 'Zima', emoji: '❄️', color: '#2563eb' };
+        }
+
+        function updateSeasonalContent() {
+            const { season, emoji, color } = getCurrentSeason();
+            document.getElementById('main-question').innerHTML = `Jaką sezonową aktywność chcesz wybrać? ${emoji}`;
+            
+            const cards = [
+                document.getElementById('inspiration-card-1'),
+                document.getElementById('inspiration-card-2'),
+                document.getElementById('inspiration-card-3')
+            ];
+
+            cards.forEach((card, index) => {
+                const cardData = inspirationCardsData[season][index];
+                if(cardData) {
+                    card.style.display = 'block';
+                    card.querySelector('h4').textContent = cardData.title;
+                    card.querySelector('p').textContent = cardData.subtitle;
+                    card.querySelector('.icon-container').innerHTML = `<span class="text-white text-xl">${cardData.icon}</span>`;
+                    card.querySelector('.icon-container').style.background = cardData.gradient;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        function populateInspirationModal(data) {
+            document.getElementById('inspiration-modal-title').innerHTML = `${data.icon} ${data.title}`;
+            document.getElementById('inspiration-modal-content').innerHTML = `<p>${data.details}</p>`;
+        }
+
+        function populateCalendarModal() {
+            // Placeholder for TCM Calendar content
+            calendarModalContent.innerHTML = '<p>Szczegółowy kalendarz TCM jest w przygotowaniu. Sprawdzaj aktualizacje!</p>';
+        }
+
+        function populateFaceYogaModal() {
+            // Placeholder for Face Yoga content
+            faceYogaModalContent.innerHTML = '<p>Ćwiczenia jogi twarzy pojawią się wkrótce. Dziękujemy za cierpliwość!</p>';
+        }
+
+
+        // --- Event Listeners ---
+        searchButton.addEventListener('click', () => {
+            handleProtectedAction(() => {
+                animateClick();
+                aiChatModal.classList.add('visible');
+            });
+        });
+
+        closeAiChatButton.addEventListener('click', () => {
+            aiChatModal.classList.remove('visible');
+        });
+
+        calendarTile.addEventListener('click', () => {
+            animateClick();
+            populateCalendarModal();
+            calendarModal.classList.add('visible');
+        });
+
+        closeCalendarModal.addEventListener('click', () => {
+            calendarModal.classList.remove('visible');
+        });
+
+        faceYogaTile.addEventListener('click', () => {
+            animateClick();
+            populateFaceYogaModal();
+            faceYogaModal.classList.add('visible');
+        });
+        
+        closeFaceYogaModal.addEventListener('click', () => {
+            faceYogaModal.classList.remove('visible');
+        });
+
+        [document.getElementById('inspiration-card-1'), document.getElementById('inspiration-card-2'), document.getElementById('inspiration-card-3')].forEach(card => {
+            card.addEventListener('click', () => {
+                const season = getCurrentSeason().season;
+                const index = parseInt(card.id.slice(-1)) - 1;
+                const cardData = inspirationCardsData[season][index];
+                
+                animateClick();
+                populateInspirationModal(cardData);
+                inspirationModal.classList.add('visible');
+            });
+        });
+        
+        closeInspirationModalBtn.addEventListener('click', () => {
+            inspirationModal.classList.remove('visible');
+        });
+
+        notificationButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            animateClick();
+            notificationPanel.classList.toggle('visible');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!notificationPanel.contains(e.target) && !notificationButton.contains(e.target)) {
+                notificationPanel.classList.remove('visible');
+            }
+        });
+
+        profileButton.addEventListener('click', () => {
+            animateClick();
+            profileModal.classList.add('visible');
+        });
+
+        closeProfileModalBtn.addEventListener('click', () => {
+            profileModal.classList.remove('visible');
+        });
+
+        saveProfileBtn.addEventListener('click', saveUserProfile);
+
+        avatarUploadInput.addEventListener('change', (event) => {
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarDataUrl = e.target.result;
+                    headerAvatar.src = avatarDataUrl;
+                    modalAvatar.src = avatarDataUrl;
+                    localStorage.setItem('userAvatar', avatarDataUrl);
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+
+
+        // --- Init ---
+        loadUserProfile();
+        populateNotifications();
+        updateSeasonalContent();
+        checkForSuccessfulSubscription();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Energetyczny - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            transition: background 0.5s ease;
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s ease;
+        }
+        .answer-btn {
+            transition: all 0.2s ease;
+        }
+        .answer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .slide-in {
+            animation: slideIn 0.5s forwards;
+        }
+        .slide-out {
+            animation: slideOut 0.5s forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(-50px); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="quiz-container" class="max-w-md w-full p-6">
+        <div id="card" class="content-card shadow-lg p-8">
+            <!-- Content will be injected by JS -->
+        </div>
+    </div>
+
+<script>
+const quizData = {
+    questions: [
+        {
+            text: "Jak najczęściej reagujesz na stres?",
+            answers: [
+                { text: "Irytacja, potrzeba działania", type: "Drzewo" },
+                { text: "Niepokój, gadatliwość", type: "Ogień" },
+                { text: "Zamartwianie się, analiza", type: "Ziemia" },
+                { text: "Smutek, chęć izolacji", type: "Metal" },
+                { text: "Strach, poczucie paraliżu", type: "Woda" }
+            ]
+        },
+        {
+            text: "Która grupa smaków najbardziej Ci odpowiada?",
+            answers: [
+                { text: "Kwaśne (cytrusy, kiszonki)", type: "Drzewo" },
+                { text: "Gorzkie (kawa, kakao, rukola)", type: "Ogień" },
+                { text: "Słodkie (dynia, bataty, owoce)", type: "Ziemia" },
+                { text: "Ostre (cebula, imbir, rzodkiewka)", type: "Metal" },
+                { text: "Słone (wodorosty, sos sojowy, oliwki)", type: "Woda" }
+            ]
+        },
+        {
+            text: "Jak opiszesz swoją budowę ciała i cerę?",
+            answers: [
+                { text: "Smukła, umięśniona, cera oliwkowa", type: "Drzewo" },
+                { text: "Zaczerwieniona cera, dużo pieprzyków", type: "Ogień" },
+                { text: "Mocna budowa, cera żółtawa, łatwo tyję", type: "Ziemia" },
+                { text: "Szczupła, blada cera, wątła budowa", type: "Metal" },
+                { text: "Miękka budowa, opuchnięcia, cera ciemniejsza", type: "Woda" }
+            ]
+        },
+        {
+            text: "Która pora roku jest dla Ciebie najtrudniejsza?",
+            answers: [
+                { text: "Wietrzna wiosna", type: "Drzewo" },
+                { text: "Upały i gorące lato", type: "Ogień" },
+                { text: "Wilgotne, parne dni późnego lata", type: "Ziemia" },
+                { text: "Sucha jesień", type: "Metal" },
+                { text: "Mroźna, ciemna zima", type: "Woda" }
+            ]
+        }
+    ],
+    results: {
+        "Drzewo": {
+            icon: "🌳",
+            title: "Twoim żywiołem jest Drzewo!",
+            description: "Jesteś jak wiosenna energia – dynamiczny/a, ambitny/a i pełen/a pomysłów. Cechuje Cię naturalna zdolność do przywództwa i planowania. Czasem jednak możesz odczuwać frustrację i napięcie, gdy sprawy nie idą po Twojej myśli.",
+            tips: [
+                "<strong>Ruch:</strong> Dynamiczne ćwiczenia (bieganie, taniec) pomogą uwolnić zastoje energii.",
+                "<strong>Dieta:</strong> Wprowadź więcej smaku kwaśnego (cytryna, kiszonki) i zielonych warzyw.",
+                "<strong>Balans:</strong> Naucz się odpuszczać. Praktyki takie jak joga czy tai-chi pomogą Ci znaleźć elastyczność."
+            ],
+            gradient: "linear-gradient(135deg, #a8e063 0%, #56ab2f 100%)"
+        },
+        "Ogień": {
+            icon: "🔥",
+            title: "Twoim żywiołem jest Ogień!",
+            description: "Jesteś iskrą życia – pełen/a pasji, radości i entuzjazmu. Twoja obecność rozświetla otoczenie. Masz otwarte serce, ale uważaj na tendencję do rozpraszania energii i emocjonalnego wypalenia.",
+            tips: [
+                "<strong>Ruch:</strong> Unikaj intensywnych ćwiczeń w upale. Pływanie i spokojne spacery będą idealne.",
+                "<strong>Dieta:</strong> Chłodzące produkty i smak gorzki (rukola, herbata) zrównoważą nadmiar gorąca.",
+                "<strong>Balans:</strong> Medytacja i czas w ciszy pomogą Ci uspokoić umysł i skontaktować się z wewnętrznym spokojem."
+            ],
+             gradient: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)"
+        },
+        "Ziemia": {
+            icon: "⛰️",
+            title: "Twoim żywiołem jest Ziemia!",
+            description: "Jesteś opoką – stabilny/a, opiekuńczy/a i niezawodny/a. Dajesz poczucie bezpieczeństwa i troszczysz się o innych. Twoim wyzwaniem może być nadmierne zamartwianie się i tendencja do 'trawienia' wciąż tych samych myśli.",
+            tips: [
+                "<strong>Ruch:</strong> Regularne, umiarkowane ćwiczenia jak spacery czy pilates wzmocnią Cię.",
+                "<strong>Dieta:</strong> Ciepłe, gotowane posiłki i naturalny smak słodki (dynia, marchew) odżywią Twoje centrum.",
+                "<strong>Balans:</strong> Ucz się stawiać granice. Poświęć czas tylko dla siebie, np. na czytanie książki."
+            ],
+             gradient: "linear-gradient(135deg, #ffb75e 0%, #ed8f03 100%)"
+        },
+        "Metal": {
+            icon: "💎",
+            title: "Twoim żywiołem jest Metal!",
+            description: "Cechuje Cię precyzja, zdyscyplinowanie i poszukiwanie sensu. Jesteś jak szlachetny minerał – zorganizowany/a i cenisz jakość. Czasem możesz wpadać w melancholię lub być dla siebie zbyt surowy/a.",
+            tips: [
+                "<strong>Ruch:</strong> Ćwiczenia oddechowe (pranajama) i joga wzmocnią Twoje płuca i pomogą uwolnić smutek.",
+                "<strong>Dieta:</strong> Smak ostry (imbir, cebula) w umiarkowanych ilościach wspiera energię Metalu.",
+                "<strong>Balans:</strong> Praktykuj odpuszczanie – zarówno starych przedmiotów, jak i uraz. Spróbuj prowadzić dziennik."
+            ],
+             gradient: "linear-gradient(135deg, #e9e9e9 0%, #bdbdbd 100%)"
+        },
+        "Woda": {
+            icon: "💧",
+            title: "Twoim żywiołem jest Woda!",
+            description: "Jesteś jak głęboka woda – introspektywny/a, mądry/a i płyniesz z prądem życia. Masz dostęp do głębokiej siły woli i intuicji. Uważaj jednak na tendencję do lęku i wyczerpywania swoich rezerw energetycznych.",
+            tips: [
+                "<strong>Ruch:</strong> Spokojne praktyki jak Qigong, tai-chi czy stretching pomogą Ci zachować energię.",
+                "<strong>Dieta:</strong> Ciepłe zupy, kompoty i smak słony (dobrej jakości sól, wodorosty) odżywią Twoje Nerki.",
+                "<strong>Balans:</strong> Zadbaj o odpoczynek i sen. Ogranicz zimne napoje i surowe jedzenie, zwłaszcza zimą."
+            ],
+             gradient: "linear-gradient(135deg, #485563 0%, #29323c 100%)"
+        }
+    }
+};
+
+let currentQuestionIndex = 0;
+const scores = { "Drzewo": 0, "Ogień": 0, "Ziemia": 0, "Metal": 0, "Woda": 0 };
+const card = document.getElementById('card');
+
+function startQuiz() {
+    card.innerHTML = `
+        <div class="text-center slide-in">
+            <div class="text-5xl mb-4">✨</div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Odkryj Swój Żywioł</h1>
+            <p class="text-gray-600 mb-6">Odpowiedz na 4 krótkie pytania, aby poznać swój dominujący typ energetyczny według Medycyny Chińskiej i otrzymać spersonalizowane wskazówki.</p>
+            <button id="start-btn" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors w-full">
+                Rozpocznij Test
+            </button>
+        </div>
+    `;
+    document.getElementById('start-btn').addEventListener('click', () => showQuestion(0));
+}
+
+function showQuestion(index) {
+    const question = quizData.questions[index];
+    const questionHtml = `
+        <div class="slide-in">
+            <p class="text-center text-sm text-gray-500 mb-2">Pytanie ${index + 1} / ${quizData.questions.length}</p>
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">${question.text}</h2>
+            <div class="space-y-3">
+                ${question.answers.map(answer => `
+                    <button class="answer-btn w-full text-left bg-white/70 p-4 rounded-lg border border-white" data-type="${answer.type}">
+                        ${answer.text}
+                    </button>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    card.classList.add('slide-out');
+    setTimeout(() => {
+        card.innerHTML = questionHtml;
+        card.classList.remove('slide-out');
+        card.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', handleAnswer);
+        });
+    }, 400);
+}
+
+function handleAnswer(e) {
+    const selectedType = e.currentTarget.dataset.type;
+    scores[selectedType]++;
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < quizData.questions.length) {
+        showQuestion(currentQuestionIndex);
+    } else {
+        showResult();
+    }
+}
+
+function getResultType() {
+    return Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+}
+
+function showResult() {
+    const resultType = getResultType();
+    const result = quizData.results[resultType];
+    
+    document.body.style.background = result.gradient;
+
+    const resultHtml = `
+        <div class="text-center slide-in">
+            <div class="text-6xl mb-3">${result.icon}</div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">${result.title}</h1>
+            <p class="text-gray-700 mb-5">${result.description}</p>
+            
+            <div class="text-left bg-white/50 p-4 rounded-lg">
+                <h3 class="font-bold text-lg mb-2 text-gray-800">Twoje Wskazówki:</h3>
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    ${result.tips.map(tip => `<li class="flex items-start"><span class="mr-2 mt-1">🌿</span><span>${tip}</span></li>`).join('')}
+                </ul>
+            </div>
+
+            <button id="restart-btn" class="mt-6 bg-white text-blue-500 font-bold py-2 px-6 rounded-full hover:bg-gray-100 transition-colors">
+                Zrób test ponownie
+            </button>
+        </div>
+    `;
+     card.classList.add('slide-out');
+     setTimeout(() => {
+        card.innerHTML = resultHtml;
+        card.classList.remove('slide-out');
+        document.getElementById('restart-btn').addEventListener('click', () => {
+             location.reload(); // Simple way to restart
+        });
+    }, 400);
+}
+
+document.addEventListener('DOMContentLoaded', startQuiz);
+
+</script>
+</body>
+</html> 

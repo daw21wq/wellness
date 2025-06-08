@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polecane Produkty - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.5s ease;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+        }
+        .scroll-container {
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .back-button {
+            position: absolute; top: 20px; left: 20px; z-index: 30;
+            width: 44px; height: 44px; background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; color: white;
+        }
+        .back-button:hover { transform: scale(1.1); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="phone-bg" class="phone-frame">
+        <a href="user-panel.html" class="back-button">
+            <span class="text-lg font-bold">←</span>
+        </a>
+
+        <div class="relative z-10 flex-1 scroll-container text-white p-6">
+            <header class="text-center pt-16 pb-6">
+                <div id="season-icon" class="text-6xl mb-4"></div>
+                <h1 id="season-header" class="text-4xl font-bold mb-2">Polecane na</h1>
+                <p id="season-subheader" class="text-opacity-90 text-lg"></p>
+            </header>
+
+            <main id="products-container" class="space-y-6">
+                <!-- Products will be injected here by JS -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getSeason() {
+                const date = new Date();
+                const month = date.getMonth(); // 0-11
+                const day = date.getDate();
+                if ((month === 2 && day >= 20) || month === 3 || month === 4 || (month === 5 && day < 6)) return 'Wiosna';
+                if ((month === 5 && day >= 6) || month === 6 || (month === 7 && day < 20)) return 'Lato';
+                if ((month === 7 && day >= 20) || (month === 8 && day < 22)) return 'PozneLato';
+                if ((month === 8 && day >= 22) || month === 9 || month === 10 || (month === 11 && day < 21)) return 'Jesien';
+                return 'Zima';
+            }
+
+            const seasonalProducts = {
+                'Wiosna': {
+                    icon: '🌱',
+                    subheader: 'Wiosnę',
+                    gradient: 'linear-gradient(135deg, #a8e063 0%, #56ab2f 100%)',
+                    categories: [
+                        { title: 'Sezonowe Składniki', icon: '🥬', items: [
+                            { name: 'Szpinak', desc: 'Wspiera wątrobę i buduje krew.' },
+                            { name: 'Rzodkiewka', desc: 'Oczyszcza i porusza energię Qi.' },
+                            { name: 'Młode pędy (kiełki)', desc: 'Pełne życia i energii wzrostu.' }
+                        ]},
+                        { title: 'Ziołowe Wsparcie', icon: '🌿', items: [
+                            { name: 'Mniszek lekarski', desc: 'Wspomaga detoks wątroby.' },
+                            { name: 'Pokrzywa', desc: 'Oczyszcza krew i wzmacnia.' }
+                        ]},
+                        { title: 'Rytuały i Akcesoria', icon: '✨', items: [
+                            { name: 'Szczotka do masażu na sucho', desc: 'Pobudza limfę i usuwa toksyny.' },
+                            { name: 'Olejek eteryczny z cytryny', desc: 'Odświeża i poprawia nastrój.' }
+                        ]}
+                    ]
+                },
+                'Lato': {
+                    icon: '🍉',
+                    subheader: 'Lato',
+                    gradient: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+                    categories: [
+                         { title: 'Sezonowe Składniki', icon: '🍓', items: [
+                            { name: 'Arbuz', desc: 'Nawadnia i chłodzi organizm.' },
+                            { name: 'Ogórek', desc: 'Ma właściwości chłodzące i nawilżające.' },
+                            { name: 'Truskawki', desc: 'Wspierają serce i gaszą pragnienie.' }
+                        ]},
+                        { title: 'Ziołowe Wsparcie', icon: '🌿', items: [
+                            { name: 'Mięta', desc: 'Orzeźwia i chłodzi umysł i ciało.' },
+                            { name: 'Kwiat bzu', desc: 'Ma działanie napotne i chłodzące.' }
+                        ]},
+                        { title: 'Rytuały i Akcesoria', icon: '✨', items: [
+                            { name: 'Woda różana w sprayu', desc: 'Do odświeżania twarzy w ciągu dnia.' },
+                            { name: 'Lekki, lniany strój', desc: 'Pozwala skórze oddychać.' }
+                        ]}
+                    ]
+                },
+                'PozneLato': {
+                    icon: '🎃',
+                    subheader: 'Późne Lato',
+                    gradient: 'linear-gradient(135deg, #ff8c00 0%, #ffc72c 100%)',
+                    categories: [
+                        { title: 'Sezonowe Składniki', icon: '🥕', items: [
+                            { name: 'Dynia', desc: 'Wzmacnia śledzionę i żołądek.' },
+                            { name: 'Marchew', desc: 'Buduje centrum i harmonizuje trawienie.' },
+                            { name: 'Kukurydza', desc: 'Naturalnie słodka, odżywia element Ziemi.' }
+                        ]},
+                        { title: 'Ziołowe Wsparcie', icon: '🌿', items: [
+                            { name: 'Lukrecja', desc: 'Harmonizuje i wspiera trawienie.' },
+                            { name: 'Imbir', desc: 'W małych ilościach wspomaga śledzionę.' }
+                        ]},
+                         { title: 'Rytuały i Akcesoria', icon: '✨', items: [
+                            { name: 'Ceramiczna miska', desc: 'Do celebrowania ciepłych, odżywczych posiłków.' },
+                            { name: 'Dziennik wdzięczności', desc: 'Pomaga uspokoić umysł i zamartwianie się.' }
+                        ]}
+                    ]
+                },
+                 'Jesien': {
+                    icon: '🍐',
+                    subheader: 'Jesień',
+                    gradient: 'linear-gradient(135deg, #c1c1c1 0%, #8e8e8e 100%)',
+                    categories: [
+                        { title: 'Sezonowe Składniki', icon: '🥔', items: [
+                            { name: 'Gruszka', desc: 'Nawilża płuca i łagodzi suchy kaszel.' },
+                            { name: 'Warzywa korzeniowe', desc: 'Gromadzą energię wewnątrz ciała.' },
+                            { name: 'Czosnek', desc: 'Wzmacnia odporność (Wei Qi).' }
+                        ]},
+                        { title: 'Ziołowe Wsparcie', icon: '🌿', items: [
+                            { name: 'Tymianek', desc: 'Wspiera układ oddechowy.' },
+                            { name: 'Prawoślaz', desc: 'Działa nawilżająco na błony śluzowe.' }
+                        ]},
+                        { title: 'Rytuały i Akcesoria', icon: '✨', items: [
+                            { name: 'Ciepły szal', desc: 'Do ochrony karku przed wiatrem i zimnem.' },
+                            { name: 'Nawilżacz powietrza', desc: 'Przeciwdziała jesiennej suchości.' }
+                        ]}
+                    ]
+                },
+                'Zima': {
+                    icon: '🍲',
+                    subheader: 'Zimę',
+                    gradient: 'linear-gradient(135deg, #6a85b6 0%, #bac8e0 100%)',
+                    categories: [
+                         { title: 'Sezonowe Składniki', icon: '🌰', items: [
+                            { name: 'Fasola adzuki', desc: 'Wzmacnia nerki i esencję Jing.' },
+                            { name: 'Orzechy włoskie', desc: 'Ogrzewają i wspierają nerki.' },
+                            { name: 'Jarmuż', desc: 'Jest odporny na zimno i bardzo odżywczy.' }
+                        ]},
+                        { title: 'Ziołowe Wsparcie', icon: '🌿', items: [
+                            { name: 'Cynamon', desc: 'Silnie rozgrzewa wnętrze organizmu.' },
+                            { name: 'Goździki', desc: 'Wzmacniają Yang nerek.' }
+                        ]},
+                         { title: 'Rytuały i Akcesoria', icon: '✨', items: [
+                            { name: 'Termofor', desc: 'Do ogrzewania dolnej części pleców (obszar nerek).' },
+                            { name: 'Ciepłe wełniane skarpety', desc: 'Utrzymują ciepło i chronią przed zimnem.' }
+                        ]}
+                    ]
+                }
+            };
+            
+            const currentSeasonName = getSeason();
+            const data = seasonalProducts[currentSeasonName];
+            const container = document.getElementById('products-container');
+
+            document.getElementById('phone-bg').style.background = data.gradient;
+            document.getElementById('season-icon').textContent = data.icon;
+            document.getElementById('season-subheader').textContent = data.subheader;
+            
+            let animationDelay = 0.2;
+            data.categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'content-card p-5';
+                categoryCard.style.animation = `fadeInUp 0.5s ease-out ${animationDelay}s both`;
+                animationDelay += 0.2;
+
+                let itemsHtml = category.items.map(item => `
+                    <li class="flex items-start space-x-3">
+                        <span class="mt-1 text-lg">${category.icon}</span>
+                        <div>
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-sm text-white opacity-80">${item.desc}</p>
+                        </div>
+                    </li>
+                `).join('');
+
+                categoryCard.innerHTML = `
+                    <h2 class="text-2xl font-bold mb-3">${category.title}</h2>
+                    <ul class="space-y-3">${itemsHtml}</ul>
+                `;
+                container.appendChild(categoryCard);
+            });
+        });
+    </script>
+</body>
+</html> 

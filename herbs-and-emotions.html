@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zioła i Emocje - Sezonowość Chińska</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .scroll-container {
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 30;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.4);
+        }
+         @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <a href="user-panel.html" class="back-button">
+            <span class="text-gray-800 text-lg font-bold">←</span>
+        </a>
+
+        <div class="relative z-10 flex-1 scroll-container text-gray-800 p-6">
+            <header class="text-center pt-16 pb-6" style="animation: fadeInUp 0.5s ease-out;">
+                <h1 class="text-3xl font-bold mb-2">🌿 Odkryj Świat Ziół</h1>
+                <p class="text-opacity-80">Jak natura wspiera Twoje emocje.</p>
+            </header>
+
+            <main id="herbs-container" class="space-y-4">
+                <!-- Herb cards will be dynamically inserted here -->
+            </main>
+
+             <footer class="text-center pt-8 pb-4 text-xs text-gray-700 text-opacity-60">
+                <p>Zawsze konsultuj się ze specjalistą przed rozpoczęciem ziołoterapii.</p>
+            </footer>
+        </div>
+    </div>
+    <script>
+        const herbsData = [
+            {
+                name: 'Mięta Pieprzowa',
+                emotions: 'Frustracja, stagnacja, napięcie',
+                action: 'Odświeża umysł, porusza zastoje energii (Qi), łagodzi napięciowe bóle głowy i poprawia koncentrację.',
+                icon: 'fa-leaf',
+                color: 'text-green-600'
+            },
+            {
+                name: 'Lawenda',
+                emotions: 'Niepokój, bezsenność, nadmierne myślenie',
+                action: 'Uspokaja Ducha (Shen), relaksuje, ułatwia zasypianie i łagodzi wewnętrzne napięcie.',
+                icon: 'fa-moon',
+                color: 'text-purple-500'
+            },
+            {
+                name: 'Róża',
+                emotions: 'Smutek, żal, zranione serce',
+                action: 'Otwiera i porusza Serce, łagodzi uczucie straty, podnosi na duchu i promuje miłość do samego siebie.',
+                icon: 'fa-heart',
+                color: 'text-pink-500'
+            },
+            {
+                name: 'Rumianek',
+                emotions: 'Irytacja, stres, problemy z trawieniem na tle nerwowym',
+                action: 'Relaksuje, łagodzi skurcze (w tym emocjonalne), uspokaja układ nerwowy i wspiera trawienie.',
+                icon: 'fa-sun',
+                color: 'text-yellow-500'
+            },
+            {
+                name: 'Melisa',
+                emotions: 'Lęk, kołatanie serca, przygnębienie',
+                action: 'Wycisza umysł, koi nerwy, wspiera spokojny sen i podnosi nastrój.',
+                icon: 'fa-spa',
+                color: 'text-lime-600'
+            },
+            {
+                name: 'Ashwagandha',
+                emotions: 'Wyczerpanie stresem, "mgła mózgowa", uczucie przytłoczenia',
+                action: 'Adaptogen, który pomaga organizmowi radzić sobie ze stresem. Wzmacnia witalność i poprawia jasność umysłu.',
+                icon: 'fa-brain',
+                color: 'text-orange-500'
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('herbs-container');
+            if (!container) return;
+
+            const emotionsLabel = 'Emocje:';
+            const actionLabel = 'Działanie:';
+
+            let delay = 0.2;
+            herbsData.forEach(herb => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-5';
+                card.style.animation = `fadeInUp 0.7s ease-out ${delay}s both`;
+                
+                card.innerHTML = `
+                    <h2 class="text-xl font-semibold mb-2 flex items-center">
+                        <i class="fas ${herb.icon} mr-3 ${herb.color}"></i>${herb.name}
+                    </h2>
+                    <p class="text-sm text-opacity-90">
+                        <strong>${emotionsLabel}</strong> ${herb.emotions}<br>
+                        <strong class="mt-1 inline-block">${actionLabel}</strong> ${herb.action}
+                    </p>
+                `;
+                container.appendChild(card);
+                delay += 0.15;
+            });
+        });
+    </script>
+</body>
+</html> 

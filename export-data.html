@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sezonowość Chińska - Eksport Danych</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 25%, #e8f5e8 50%, #fff3e0 75%, #fce4ec 100%);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="glass-card p-6 md:p-8 w-full max-w-2xl">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Eksport Danych</h2>
+      </div>
+      
+      <div class="space-y-6">
+        <!-- Users Export -->
+        <div class="p-5 bg-white/50 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-3">Użytkownicy</h3>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button class="export-btn w-full sm:w-auto flex-1 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg" data-type="users" data-format="csv">Pobierz jako CSV</button>
+            <button class="export-btn w-full sm:w-auto flex-1 bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg" data-type="users" data-format="json">Pobierz jako JSON</button>
+          </div>
+        </div>
+        
+        <!-- Recipes Export -->
+        <div class="p-5 bg-white/50 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-3">Przepisy</h3>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button class="export-btn w-full sm:w-auto flex-1 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg" data-type="recipes" data-format="csv">Pobierz jako CSV</button>
+            <button class="export-btn w-full sm:w-auto flex-1 bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg" data-type="recipes" data-format="json">Pobierz jako JSON</button>
+          </div>
+        </div>
+
+        <!-- Statistics Export -->
+        <div class="p-5 bg-white/50 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-3">Statystyki</h3>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button class="export-btn w-full sm:w-auto flex-1 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg" data-type="stats" data-format="csv">Pobierz jako CSV</button>
+            <button class="export-btn w-full sm:w-auto flex-1 bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg" data-type="stats" data-format="json">Pobierz jako JSON</button>
+          </div>
+        </div>
+      </div>
+
+       <div class="mt-8">
+        <button onclick="window.close()" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+          Zamknij
+        </button>
+      </div>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-10 right-10 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const exportButtons = document.querySelectorAll('.export-btn');
+        const toast = document.getElementById('toast');
+
+        const mockData = {
+            users: JSON.parse(localStorage.getItem('appUsers')) || [
+                { id: 1, name: 'Anna Nowak', email: 'anna.nowak@example.com', subscription: 'Premium' },
+                { id: 2, name: 'Piotr Kowalski', email: 'piotr.kowalski@example.com', subscription: 'Free' },
+            ],
+            recipes: [
+                { id: 1, name: 'Wiosenna zupa z młodymi warzywami', duration_min: 30, calories: 250 },
+                { id: 2, name: 'Sałatka z młodymi liśćmi', duration_min: 15, calories: 180 },
+                { id: 3, name: 'Zielone smoothie detox', duration_min: 5, calories: 150 },
+            ],
+            stats: [
+                { metric: 'Aktywni użytkownicy', value: 1247 },
+                { metric: 'Subskrypcje Premium', value: 342 },
+                { metric: 'Przepisy', value: 89 },
+                { metric: 'Przychód (€)', value: 2847 },
+            ]
+        };
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function convertToCSV(data) {
+            if (!data || data.length === 0) return '';
+            const headers = Object.keys(data[0]);
+            const csvRows = [
+                headers.join(','),
+                ...data.map(row => headers.map(header => JSON.stringify(row[header])).join(','))
+            ];
+            return csvRows.join('\\n');
+        }
+        
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        exportButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const type = button.dataset.type;
+                const format = button.dataset.format;
+                const data = mockData[type];
+                
+                if (!data) {
+                    alert('Brak danych do eksportu.');
+                    return;
+                }
+
+                let fileContent, fileName, mimeType;
+
+                if (format === 'json') {
+                    fileContent = JSON.stringify(data, null, 2);
+                    fileName = `${type}_export.json`;
+                    mimeType = 'application/json';
+                } else { // csv
+                    fileContent = convertToCSV(data);
+                    fileName = `${type}_export.csv`;
+                    mimeType = 'text/csv';
+                }
+
+                downloadFile(fileContent, fileName, mimeType);
+                showToast(`Pobieranie pliku ${fileName}...`);
+            });
+        });
+    });
+  </script>
+</body>
+</html> 

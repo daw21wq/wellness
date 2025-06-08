@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ustawienia - Smaki Sezonu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #f0f9ff 0%, #fefce8 100%);
+        }
+        .settings-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: fadeInScale 0.6s ease-out forwards;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .settings-option {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .settings-option:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+        .sub-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateX(100%);
+            z-index: 10;
+        }
+        .sub-panel.active {
+            transform: translateX(0);
+        }
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3b82f6; /* blue-500 */
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="settings-container" class="relative max-w-md w-full mx-4">
+        <div class="settings-card rounded-2xl shadow-xl p-8 overflow-hidden">
+
+            <!-- Main Settings Panel -->
+            <div id="main-settings">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Ustawienia</h2>
+                <div class="space-y-4">
+                    <div id="change-password-btn" class="settings-option flex justify-between items-center p-4 rounded-lg cursor-pointer border-b">
+                        <span class="text-gray-700 font-medium">Zmień hasło</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    <div id="manage-notifications-btn" class="settings-option flex justify-between items-center p-4 rounded-lg cursor-pointer border-b">
+                        <span class="text-gray-700 font-medium">Zarządzaj powiadomieniami</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                    <a href="admin-panel.html" target="_blank" class="settings-option flex justify-between items-center p-4 rounded-lg cursor-pointer text-blue-600 font-semibold">
+                        <span>Otwórz Panel Administratora</span>
+                        <i class="fas fa-chevron-right text-blue-500"></i>
+                    </a>
+                </div>
+                <button onclick="window.location.href='user-panel.html'" class="w-full mt-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition">Zamknij</button>
+            </div>
+
+            <!-- Change Password Panel -->
+            <div id="change-password-panel" class="sub-panel p-8 flex flex-col">
+                <button class="back-btn self-start text-gray-500 hover:text-gray-800 mb-6"><i class="fas fa-arrow-left mr-2"></i> Wróć</button>
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Zmień hasło</h3>
+                <form id="password-form" class="space-y-4">
+                    <input type="password" placeholder="Aktualne hasło" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <input type="password" placeholder="Nowe hasło" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <input type="password" placeholder="Powtórz nowe hasło" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <button type="submit" class="w-full mt-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">Zapisz zmiany</button>
+                </form>
+            </div>
+
+            <!-- Manage Notifications Panel -->
+            <div id="notifications-panel" class="sub-panel p-8 flex flex-col">
+                <button class="back-btn self-start text-gray-500 hover:text-gray-800 mb-6"><i class="fas fa-arrow-left mr-2"></i> Wróć</button>
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Powiadomienia</h3>
+                <div class="space-y-5">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium text-gray-700">Nowe przepisy</span>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" id="notif-recipes" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="notif-recipes" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                     <div class="flex justify-between items-center">
+                        <span class="font-medium text-gray-700">Wskazówki sezonowe</span>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" id="notif-tips" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="notif-tips" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                     <div class="flex justify-between items-center">
+                        <span class="font-medium text-gray-700">Promocje i nowości</span>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" id="notif-promo" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="notif-promo" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 translate-y-10 transition-all duration-300">
+        <p>Hasło zostało zmienione!</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainSettings = document.getElementById('main-settings');
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            const manageNotificationsBtn = document.getElementById('manage-notifications-btn');
+            
+            const passwordPanel = document.getElementById('change-password-panel');
+            const notificationsPanel = document.getElementById('notifications-panel');
+            const backBtns = document.querySelectorAll('.back-btn');
+
+            const passwordForm = document.getElementById('password-form');
+            const toast = document.getElementById('toast');
+
+            const notifRecipeToggle = document.getElementById('notif-recipes');
+            const notifTipsToggle = document.getElementById('notif-tips');
+            const notifPromoToggle = document.getElementById('notif-promo');
+
+            // --- Navigation ---
+            changePasswordBtn.addEventListener('click', () => passwordPanel.classList.add('active'));
+            manageNotificationsBtn.addEventListener('click', () => notificationsPanel.classList.add('active'));
+            
+            backBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    passwordPanel.classList.remove('active');
+                    notificationsPanel.classList.remove('active');
+                });
+            });
+
+            // --- Password Change ---
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Simulate password change
+                showToast('Hasło zostało pomyślnie zaktualizowane!', 'success');
+                setTimeout(() => {
+                    passwordPanel.classList.remove('active');
+                    e.target.reset();
+                }, 1500);
+            });
+
+            // --- Notification Settings ---
+            const notificationSettings = {
+                recipes: true,
+                tips: true,
+                promo: false,
+            };
+
+            function saveNotifSettings() {
+                localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+            }
+
+            function loadNotifSettings() {
+                const saved = localStorage.getItem('notificationSettings');
+                if (saved) {
+                    Object.assign(notificationSettings, JSON.parse(saved));
+                }
+                notifRecipeToggle.checked = notificationSettings.recipes;
+                notifTipsToggle.checked = notificationSettings.tips;
+                notifPromoToggle.checked = notificationSettings.promo;
+            }
+
+            notifRecipeToggle.addEventListener('change', () => {
+                notificationSettings.recipes = notifRecipeToggle.checked;
+                saveNotifSettings();
+                showToast('Ustawienia zapisane', 'info');
+            });
+            notifTipsToggle.addEventListener('change', () => {
+                notificationSettings.tips = notifTipsToggle.checked;
+                saveNotifSettings();
+                showToast('Ustawienia zapisane', 'info');
+            });
+            notifPromoToggle.addEventListener('change', () => {
+                notificationSettings.promo = notifPromoToggle.checked;
+                saveNotifSettings();
+                showToast('Ustawienia zapisane', 'info');
+            });
+
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                toast.className = toast.className.replace(/bg-\w+-500/, `bg-${type === 'success' ? 'green' : 'blue'}-500`);
+                toast.classList.remove('opacity-0', 'translate-y-10');
+                
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-10');
+                }, 2500);
+            }
+
+            // --- Init ---
+            loadNotifSettings();
+        });
+    </script>
+</body>
+</html> 
